@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "eslint index.js src",
+    "build": "browserify index.js | uglifyjs -c -m > bundle.js",
     "start": "budo index.js --serve=bundle.js --live -d | bistre"
   },
   "repository": {
