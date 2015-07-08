@@ -6,9 +6,7 @@ module.exports = {
     centerLng: -77.0269,
     zoom: 13,
     waypoints: [],
-    language: 'en',
-    service: 'Car (fastest)',
-    layer: MapboxEmerald
+    language: 'en'
   },
 
   services: [
@@ -30,8 +28,7 @@ module.exports = {
      tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}@2x.png?access_token=mapbox_access_token',
      attribution: '<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
      maxZoom: 18
-   },
-
+   }
 ]
 
 };
