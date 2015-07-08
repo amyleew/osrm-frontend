@@ -1,11 +1,13 @@
 'use strict';
 
+
 var Geocoder = require('leaflet-control-geocoder');
 require('leaflet-routing-machine');
 
 var options = require('./src/lrm_options');
-var defaultView = require('./src/leaflet_options');
-var map = L.map('map').setView([38.8995, -77.0269], 13);
+var mapView = require('./src/leaflet_options');
+var map = L.map('map').setView([mapView.defaultView.centerLat, mapView.defaultView.centerLng], mapView.defaultView.zoom);
+
 
 L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.emerald/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token')).addTo(map);
 
