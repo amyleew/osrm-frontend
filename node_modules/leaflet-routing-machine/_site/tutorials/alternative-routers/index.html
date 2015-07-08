@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
+
+    <title>
+      GraphHopper, Mapbox and other routing software &middot; 
+      Leaflet Routing Machine
+    </title>
+
+    <script src="/leaflet-routing-machine/public/lib/highlight.pack.js"></script>
+
+    <!-- CSS -->
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.css">
+    <![endif]-->
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/normalize.css">
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/skeleton.css">
+    <link rel="stylesheet" href="/leaflet-routing-machine/lib/prism.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/lib/leaflet.iconlabel.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/site.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="/leaflet-routing-machine/lib/leaflet.iconlabel.js"></script>
+    <script src="/leaflet-routing-machine/lib/Control.Geocoder.js"></script>
+    <script src="/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  </head>
+  <body>
+    <div class="github-fork-ribbon-wrapper right">
+        <div class="github-fork-ribbon">
+            <a href="https://github.com/perliedman/leaflet-routing-machine">Fork me on GitHub</a>
+        </div>
+    </div>
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <header class="hero-header">
+          <h1 class="hero-heading"><a href="/leaflet-routing-machine/">Leaflet Routing Machine</a></h1>
+          <div><img src="/leaflet-routing-machine/public/logo.svg"/></div>
+          <p>Easy, flexible routing for Leaflet</p>
+        </header>
+      </div>
+    </div>
+    <div>
+      <a href="/leaflet-routing-machine/tutorials">&laquo; Back to tutorials</a>
+    </div>
+    <hr>
+
+    <h2>GraphHopper, Mapbox and other routing software</h2>
+
+<p>Behind the UI, Leaflet Routing Machine queries <a href="http://project-osrm.org">OSRM</a>'s
+servers each time the route is recalculated, unless you tell it to use something else.
+This is great for normal use: the service is free, OSRM is both good as well as <em>very</em>
+quick. However, there are cases where OSRM's defaults doesn't cut it: you want to
+do bike routing, while OSRM's open servers only route for cars at the time of writing.
+The free servers comes with no SLA, which might be another cause to use another server.</p>
+
+<h3>Using your own OSRM server</h3>
+
+<p>If it's just the configuration and/or reliablity of the free servers that you need to
+control yourself, you can quite easily <a href="https://github.com/Project-OSRM/osrm-backend/wiki/Running-OSRM">set up your own OSRM server</a>.
+When you have it running, using it with Leaflet Routing Machineis a matter of telling
+telling it where the server is located:</p>
+
+<pre><code class="language-javascript">L.Routing.control({
+    [...]
+    serviceUrl: 'http://my-osrm/viaroute'
+});
+</code></pre>
+
+<p>Under the hood, this option will be passed along to the <a href="/leaflet-routing-machine/api#l-routing-osrm"><code>L.Routing.OSRM</code></a>
+instance that is implicitly created with your control; this is the control's <em>router</em>.</p>
+
+<p>You can also, more explicitly, hand the router instance to use directly to the control:</p>
+
+<pre><code class="language-javascript">L.Routing.control({
+    [...]
+    router: L.Routing.osrm({
+        serviceUrl: 'http://my-osrm/viaroute'
+    })
+});
+</code></pre>
+
+<h3>GraphHopper</h3>
+
+<p>Another popular, open source routing software is <a href="https://graphhopper.com/">GraphHopper</a>. It's fast, works
+well with OpenStreetMap data and runs on a lot of platforms (even on Android).</p>
+
+<p>To use switch to using GraphHopper with Leaflet Routing Machine, you need to use the plugin
+<a href="https://github.com/perliedman/lrm-graphhopper">lrm-graphhopper</a>. You can
+<a href="http://www.liedman.net/lrm-graphhopper/download/">download lrm-graphhopper</a> and insert the
+JavaScript file into your page right after where it loads Leaflet Routing Machine:</p>
+
+<pre><code class="language-markup">[...]
+&lt;script src=&quot;leaflet-routing-machine.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;lrm-graphhopper.js&quot;&gt;&lt;/script&gt;
+[...]</code></pre>
+
+
+<p>Now you need to give the GraphHopper router to Leaflet Routing Machine's control:</p>
+
+<pre><code class="language-javascript">L.Routing.control({
+    [...]
+    router: L.Routing.graphHopper('apiKey');
+});
+</code></pre>
+
+<p>Like OSRM, the GraphHopper router will by default use GraphHopper's public servers. You need to
+<a href="https://graphhopper.com/dashboard/#/register">register</a> and get an API key to use these, and
+you need to give that API key to the router instance.</p>
+
+<p>If you set up your own GraphHopper server, you don't need the API key, but instead configure the
+address of your server:</p>
+
+<pre><code class="language-javascript">L.Routing.control({
+    [...]
+    router: L.Routing.graphHopper(undefined /* no api key */, {
+        serviceUrl: 'http://my-graphhopper/api/v1/route'
+    });
+});
+</code></pre>
+
+<h4>Using GraphHopper with npm and Browserify</h4>
+
+<p>If you're lucky enough to work with Browserify, the plugin can be installed through npm instead
+of downloading the script manually:</p>
+
+<pre><code>npm install --save lrm-graphhopper
+</code></pre>
+
+<p>And later required into your source. Note that the plugin, like many Leaflet plugins, will tack
+itself on to the main Leaflet object, <code>L</code>, so there's no explicit need to save the result you'll
+get back from the <code>require</code> statement, although you can if that is how you structure your code.</p>
+
+<pre><code class="language-javascript">var L = require('leaflet');
+require('leaflet-routing-machine'); // Adds L.Routing onto L
+require('lrm-graphhopper'); // Adds L.Routing.GraphHopper onto L.Routing
+
+L.Routing.control({
+    [...]
+    router: L.Routing.graphHopper('api-key');
+});
+</code></pre>
+
+<h3>Mapbox directions API</h3>
+
+<p>Another popular alternative for routing is to use
+<a href="https://www.mapbox.com/developers/api/directions/">Mapbox Directions API</a>. The directions API
+is a part of Mapbox's platform, so you can't install your own version of it, it's installed, hosted
+and supported by Mapbox. You'll need a Mapbox account to use this feature.</p>
+
+<p>First, you need an <a href="https://www.mapbox.com/account/apps/">API access token</a> to identify that it's
+your account that should be billed for the routing.</p>
+
+<p>Second, you need to use the plugin
+<a href="https://github.com/perliedman/lrm-mapbox">lrm-mapbox</a>. You can
+<a href="http://www.liedman.net/lrm-mapbox/download/">download lrm-mapbox</a> and insert the
+JavaScript file into your page right after where it loads Leaflet Routing Machine:</p>
+
+<pre><code class="language-markup">[...]
+&lt;script src=&quot;leaflet-routing-machine.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;lrm-mapbox.js&quot;&gt;&lt;/script&gt;
+[...]</code></pre>
+
+
+<p>Now, we are ready to tell Leaflet Routing Machine's control to use Mapbox as router:</p>
+
+<pre><code class="language-javascript">L.Routing.control({
+    [...]
+    router: L.Routing.mapbox('access-token');
+});
+</code></pre>
+
+<h4>Using Mapbox directions API with npm and Browserify</h4>
+
+<p>Like with the GraphHopper plugin, the Mapbox plugin can be installed through npm instead
+of downloading the script manually:</p>
+
+<pre><code>npm install --save lrm-mapbox
+</code></pre>
+
+<p>Note that the plugin, like many Leaflet plugins, will tack
+itself on to the main Leaflet object, <code>L</code>, so there's no explicit need to save the result you'll
+get back from the <code>require</code> statement, although you can if that is how you structure your code.</p>
+
+<pre><code class="language-javascript">var L = require('leaflet');
+require('leaflet-routing-machine'); // Adds L.Routing onto L
+require('lrm-mapbox'); // Adds L.Routing.Mapbox onto L.Routing
+
+L.Routing.control({
+    [...]
+    router: L.Routing.mapbox('access-token');
+});
+</code></pre>
+
+<h3>Using other routers</h3>
+
+<p>You can also build support for other routing software. This way, you can for example use
+Leaflet Routing Machine with proprietary routing software of your choice.</p>
+
+<p>The basic requirement is that the router class must implement the
+<a href="/leaflet-routing-machine/api/#irouter"><code>IRouter</code></a> interface, so that Leaflet Routing Machine knows
+how to communicate with your router. The interface is pretty simple and contains a single
+method:</p>
+
+<pre><code class="language-javascript">router.route(waypoints, callback, context, options)
+</code></pre>
+
+<p><code>waypoints</code> is the array of waypoints the route should pass, and contains at least two
+elements when <code>route</code> is called; each element will have at least a <code>latLng</code> property,
+containing a <code>L.LatLng</code> that describes the waypoints location, optionally it will also
+have a <code>name</code> as string and <code>options</code>.</p>
+
+<p>Since routing will most likely be an asynchronous operation, the <code>route</code> method isn't
+expected to return a result, but rather call the provided <code>callback</code> function when
+the result has been calculated. The callback takes two arguments, like the Node.js
+convention: the first argument is an error, and is set to a falsy value if no error
+occured; in this case the other argument is the result, an array of route alternatives
+with at least one element.</p>
+
+<p>A route is defined by the <a href="/leaflet-routing-machine/api#iroute"><code>IRoute</code></a> interface, and
+should among many things contain a description of the route's geometry, the
+instructions for the route, as well as summaries of the total distance and expected
+time for the route.</p>
+
+<p>By implementing these interfaces, you will get all the other functionality of
+Leaflet Routing Machine for free.</p>
+
+<h3>Preventing excessive requests (and bills)</h3>
+
+<p>Several routing services bill you per routing requests, or take very long time to
+respond to a request. In these scenarios, it might
+be required to reduce the number of routing requests made by Leaflet Routing Machine.</p>
+
+<p>The first trick, which will makes the largest reduction in number of requests, is to
+disable the <code>routeWhileDragging</code> option for the control, if you have it enabled.
+While it definitely looks cool and gives great feedback to the user, it costs <em>a lot</em>
+of requests.</p>
+
+<p>Another, more dramatic step, is to disable automatic routing altogether. By default,
+the control will make a routing request every time a waypoint is changed (when
+a waypoint marker is released after dragging, when an address is updated in the
+input fields, etc.). However, you can disable this, and only make the control route
+when you explicitly ask it to. This can be achieved by setting the option
+<code>autoRoute</code> to <code>false</code>. When doing so, the control will <em>only</em> calculate a route
+when the control's <code>route</code> method is called. The method takes no arguments, but
+routes through the currently selected waypoints. You will need to implement a way
+(a button, for example), that calls the <code>route</code> method.</p>
+
+
+    <hr>
+    Copyright &copy; 2015 Per Liedman, released under <a href="https://raw.githubusercontent.com/perliedman/leaflet-routing-machine/master/LICENSE">ISC License</a>. Logo by <a href="http://thenounproject.com/alexeyivanov">Alexey Ivanov</a>, released under Creative Commons CC-BY 3.0.
+  </div>
+</div>
+
+    <script src="/leaflet-routing-machine/lib/prism.js"></script>
+  </body>
+</html>

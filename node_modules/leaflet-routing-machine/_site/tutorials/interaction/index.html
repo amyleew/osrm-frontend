@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
+
+    <title>
+      Interaction tutorial &middot; 
+      Leaflet Routing Machine
+    </title>
+
+    <script src="/leaflet-routing-machine/public/lib/highlight.pack.js"></script>
+
+    <!-- CSS -->
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.css">
+    <![endif]-->
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/normalize.css">
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/skeleton.css">
+    <link rel="stylesheet" href="/leaflet-routing-machine/lib/prism.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/lib/leaflet.iconlabel.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/site.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="/leaflet-routing-machine/lib/leaflet.iconlabel.js"></script>
+    <script src="/leaflet-routing-machine/lib/Control.Geocoder.js"></script>
+    <script src="/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  </head>
+  <body>
+    <div class="github-fork-ribbon-wrapper right">
+        <div class="github-fork-ribbon">
+            <a href="https://github.com/perliedman/leaflet-routing-machine">Fork me on GitHub</a>
+        </div>
+    </div>
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <header class="hero-header">
+          <h1 class="hero-heading"><a href="/leaflet-routing-machine/">Leaflet Routing Machine</a></h1>
+          <div><img src="/leaflet-routing-machine/public/logo.svg"/></div>
+          <p>Easy, flexible routing for Leaflet</p>
+        </header>
+      </div>
+    </div>
+    <div>
+      <a href="/leaflet-routing-machine/tutorials">&laquo; Back to tutorials</a>
+    </div>
+    <hr>
+
+    <h2>Interaction</h2>
+
+<p>This tutorials focuses on making the rest of your app and Leaflet interact with
+the routing plugin. It shows you how to accomplish some common tasks by calling
+functions within Leaflet Routing Machine, for example to add new waypoints,
+modify waypoints or reversing the route.</p>
+
+<h3>Adding waypoints by clicking the map</h3>
+
+<p>By default, the control does not allow the user to add waypoints to the route
+by clicking the map. The reason is that exactly how this is done varies greatly
+from application to application; instead of the control deciding how it should work and
+what it should look like, this is left to the app to decide.</p>
+
+<p>Below is a very basic example of what it can look like. By clicking the map,
+a popup is brought up, from which the user can select the clicked location as
+start point or destination for the route. Via points can be added by dragging
+the route's line in the map, once a start and destination has been added.</p>
+
+<div id="map-1" class="map"></div>
+
+
+<p>Lets go through the modifications necessary to make this happen.</p>
+
+<p>First, we need to add a popup when the map is clicked. This code is nothing
+specific for Leaflet Routing Machine, but rather an example of how you can
+build basic user interfaces with Leaflet's builtin functionality, without the
+use of for example jQuery or similar.</p>
+
+<pre><code class="language-javascript">function createButton(label, container) {
+    var btn = L.DomUtil.create('button', '', container);
+    btn.setAttribute('type', 'button');
+    btn.innerHTML = label;
+    return btn;
+}
+
+map.on('click', function(e) {
+    var container = L.DomUtil.create('div'),
+        startBtn = createButton('Start from this location', container),
+        destBtn = createButton('Go to this location', container);
+
+    L.popup()
+        .setContent(container)
+        .setLatLng(e.latlng)
+        .openOn(map);
+});</code></pre>
+
+
+<p>Adding this should give you a popup once the map is clicked.</p>
+
+<p>Now we need to make something happen when the buttons are clicked. This
+is the part where we actually interact with Leaflet Routing Machine's
+control. This code assumes the routing control instance is stored in <code>control</code>.</p>
+
+<p>When the "Start from this location" button is clicked, the first waypoint of
+the route should be replaced with the location that the user clicked on.
+Modifying the waypoints can be done with the method <code>spliceWaypoints</code>, which
+mimics the behavior of JavaScript's own <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice"><code>Array.splice</code></a>: with it, you
+can both add and remove waypoints, even in one operation.</p>
+
+<p>To replace the first waypoint, you simply tell Leaflet Routing Machine to
+remove one waypoint at index 0 (the first), and then add a new at the clicked
+location. Add this code inside the map's click event handler; <code>e</code> will still
+refer to the click event, and <code>e.latlng</code> is the location clicked:</p>
+
+<pre data-line="2"><code class="language-javascript">    L.DomEvent.on(startBtn, 'click', function() {
+        control.spliceWaypoints(0, 1, e.latlng);
+        map1.closePopup();
+    });
+</code></pre>
+
+
+<p>Similarily, setting the destination is a matter of removing the last waypoint (remember there
+can be more than two, if there are via points) and adding a new at the clicked location:</p>
+
+<pre data-line="2"><code class="language-javascript">    L.DomEvent.on(destBtn, 'click', function() {
+        control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
+        map1.closePopup();
+    });
+</code></pre>
+
+
+<p>As can be seen in the code above, the current waypoints can also be accessed with the <code>getWaypoints</code>
+method.</p>
+
+<h3>Reversing the route</h3>
+
+<p>It is common to have button to reverse the direction of the route (i.e. reverse the list of waypoints).
+Lets go through the steps necessary to implement such a button.</p>
+
+<p>First, where should we put the button? One suggestion would be to put it next to the button that adds
+a waypoint to the route, below the last address input field. But how do you add something to that panel,
+since it is created by Leaflet Routing Machine? We will use pattern that is common when you want to
+customize parts of the control's user interface: we will extend the implementing class and override the
+method that is responsible for creating the UI.</p>
+
+<p>In this case, we need to override the control's <a href=""><code>L.Routing.Plan</code></a>,
+since its method <code>createGeocoders</code> is what creates the panel we're going to add a button to.</p>
+
+<pre><code class="language-javascript">var ReversablePlan = L.Routing.Plan.extend({
+    createGeocoders: function() {
+        var container = L.Routing.Plan.prototype.createGeocoders.call(this),
+            reverseButton = createButton('&amp;#8593;&amp;#8595;', container);
+        return container;
+    }
+}
+</code></pre>
+
+<p>We're creating a new class, <code>ReversablePlan</code>, that inherits from <code>L.Routing.Plan</code>, with one single
+overridden method, <code>createGeocoders</code>. We're using our utility method <code>createButton</code> from the example
+above to create the button. Also note how we call the base implementation of <code>createGeocoders</code>, and
+simply add the new button to the panel returned by that method, before returning the panel.</p>
+
+<p>Having added the new button, we simply need to attach a listener to it, and make it reverse the route.
+We add this code inside the <code>createGeocders</code> method, before returning the container:</p>
+
+<pre><code class="language-javascript">        L.DomEvent.on(reverseButton, 'click', function() {
+            var waypoints = this.getWaypoints();
+            this.setWaypoints(waypoints.reverse());
+        }, this);
+</code></pre>
+
+<p>We get the current waypoints with <code>getWaypoints</code>, which returns an array. We then use JavaScript's
+builtin method <code>reverse</code> to flip the order of the array, and finally set the waypoints to the reversed
+array with <code>setWaypoints</code>. Simple, right?</p>
+
+<p>The more observant readers will note that <code>this</code> in the code will be the instance of the <code>ReversablePlan</code>,
+not the routing control itself, but in the first example <code>getWaypoints</code> was a method on the control, now
+it appears to be a method on the plan - what is going on? The truth is that while the control has
+<code>getWaypoints</code>, <code>setWaypoints</code> as well as <code>spliceWaypoints</code>, they are really just shortcuts that call
+the control's plan's methods with the same names. It is the plan's responsibility to hold the list of
+waypoints, and the control will query it when needed.</p>
+
+<p>Ok, we now have a <code>ReversablePlan</code>, but how do we use it in the routing control? This is done with yet
+another option when creating the control:</p>
+
+<pre><code class="language-javascript">var plan = new ReversablePlan([
+        L.latLng(57.74, 11.94),
+        L.latLng(57.6792, 11.949)
+    ], {
+        geocoder: L.Control.Geocoder.nominatim(),
+        routeWhileDragging: true
+    }),
+    control = L.Routing.control({
+        routeWhileDragging: true,
+        plan: plan
+    }).addTo(map1);
+</code></pre>
+
+<p>While this looks pretty straight forward, there are a couple of points to note here:</p>
+
+<ul>
+<li>We no longer use the <code>waypoints</code> option to set the initial waypoints, but rather pass
+them as the first argument when creating the plan instance</li>
+<li>The option <code>geocoder</code> is passed when creating the plan instance
+instance rather than when creating the control</li>
+<li>The option <code>routeWhileDragging</code> is passed <em>both</em> when creating the plan as well as when
+creating the control</li>
+</ul>
+
+
+<p>Why is this? Well, unless the <code>plan</code> option is specified, the control will instantiate its own
+plan instance, and when doing so it will <em>pass the same options that were passed to it</em>, meaning
+the plan will get the same options object that we passed when creating the control. This means that
+even though the control itself actually doesn't have a <code>geocoder</code> option, you can pass it one,
+since the plan <em>does</em> have a <code>geocoder</code> option, and will get the value we passed in to the control.
+On the other hand, when we use a plan we created ourselves, the plan's options are already set,
+since it's already created, and we need to pass the options directly to the plan when creating it.</p>
+
+<p>The <code>waypoints</code> option is a shortcut that sets the plan's waypoints, but it can also be achieved
+by passing the waypoints when creating the plan, so we do that instead.</p>
+
+<p>For full details on available options, methods and events, you can always look up the
+<a href="/leaflet-routing-machine/api">Leaflet Routing Machine API docs</a>.</p>
+
+<script src="index.js"></script>
+
+
+
+    <hr>
+    Copyright &copy; 2015 Per Liedman, released under <a href="https://raw.githubusercontent.com/perliedman/leaflet-routing-machine/master/LICENSE">ISC License</a>. Logo by <a href="http://thenounproject.com/alexeyivanov">Alexey Ivanov</a>, released under Creative Commons CC-BY 3.0.
+  </div>
+</div>
+
+    <script src="/leaflet-routing-machine/lib/prism.js"></script>
+  </body>
+</html>

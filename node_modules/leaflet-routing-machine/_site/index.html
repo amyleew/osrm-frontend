@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
+
+    <title>
+      
+      Leaflet Routing Machine
+    </title>
+
+    <script src="/leaflet-routing-machine/public/lib/highlight.pack.js"></script>
+
+    <!-- CSS -->
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.css">
+    <![endif]-->
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/normalize.css">
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/skeleton.css">
+    <link rel="stylesheet" href="/leaflet-routing-machine/lib/prism.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/lib/leaflet.iconlabel.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/site.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="/leaflet-routing-machine/lib/leaflet.iconlabel.js"></script>
+    <script src="/leaflet-routing-machine/lib/Control.Geocoder.js"></script>
+    <script src="/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  </head>
+  <body>
+    <div class="github-fork-ribbon-wrapper right">
+        <div class="github-fork-ribbon">
+            <a href="https://github.com/perliedman/leaflet-routing-machine">Fork me on GitHub</a>
+        </div>
+    </div>
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <header class="hero-header">
+          <h1 class="hero-heading"><a href="/leaflet-routing-machine/">Leaflet Routing Machine</a></h1>
+          <div><img src="/leaflet-routing-machine/public/logo.svg"/></div>
+          <p>Easy, flexible routing for Leaflet</p>
+          <a class="button button-primary" href="/leaflet-routing-machine/#about">About</a>
+          <a class="button button-primary" href="/leaflet-routing-machine/#getting-started">Getting Started</a>
+          <a class="button button-primary" href="/leaflet-routing-machine/tutorials">Tutorials</a>
+          <a class="button button-primary" href="/leaflet-routing-machine/api">API</a>
+          <a class="button button-primary" href="/leaflet-routing-machine/download">Download</a>
+        </header>
+      </div>
+    </div>
+    <hr>
+
+        <div class="row">
+      <div class="twelve columns">
+        <a name="example"></a>
+        <div id="map" class="map"></div>
+      </div>
+      <div class="one-half column">
+      </div>
+    </div>
+    <hr>
+    <h2><a name="about"></a>About</h2>
+    <p>
+      <em>Leaflet Routing Machine</em> is an easy, flexible and extensible way to add routing
+      to a <a href="http://leafletjs.com/">Leaflet</a> map. Using the default is just a few lines of
+      code to add fully functional routing, but you can still customize almost every aspect of the
+      user interface and interactions.
+    </p>
+    <h3>Features</h3>
+    <ul>
+      <li>Standard Leaflet control, with Leaflet look and feel</li>
+      <li>Routing from start to destination, with possibility of via points</li>
+      <li>Add, edit and remove waypoints through both address input and using the map</li>
+      <li>Multiple language support</li>
+      <li>
+        Support for several routing engines:
+        <ul>
+          <li><a href="http://project-osrm.org/">OSRM</a> - builtin default</li>
+          <li><a href="https://graphhopper.com/">GraphHopper</a> - through plugin <a href="https://github.com/perliedman/lrm-graphhopper">lrm-graphhopper</a></li>
+          <li><a href="https://www.mapbox.com/developers/api/directions/">Mapbox Directions API</a> - through plugin <a href="https://github.com/perliedman/lrm-mapbox">lrm-mapbox</a></li>
+        </ul>
+      </li>
+      <li>Highly customizable for advanced use</li>
+      <li>Customizable look (theming / skins)</li>
+      <li>Open Source released under <a href="http://en.wikipedia.org/wiki/ISC_license">ISC License</a> (more or less equivalent with the MIT license)</li>
+    </ul>
+    <h2><a name="getting-started"></a>Getting started</h2>
+    <p>
+      Getting started with Leaflet Routing Machine is easy. <a href="/leaflet-routing-machine/download">Download</a> the files and
+      include <code>leaflet-routing-machine.css</code> and <code>leaflet-routing-machine.js</code> in a Leaflet page:
+    </p>
+    <pre><code class="language-markup">[...]
+&lt;link rel=&quot;stylesheet&quot; href=&quot;http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;leaflet-routing-machine.css&quot; /&gt;
+&lt;script src=&quot;http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;leaflet-routing-machine.js&quot;&gt;&lt;/script&gt;
+[...]</code></pre>
+    <p>If you prefer, you can also install using NPM:<p>
+    <pre><code class="bash">npm install --save leaflet-routing-machine</code></pre>
+    <p>
+      To add the basic routing control to your <code>map</code> instance, use this Javascript code:
+    </p>
+    <pre><code class="language-javascript">L.Routing.control({
+  waypoints: [
+    L.latLng(57.74, 11.94),
+    L.latLng(57.6792, 11.949)
+  ]
+}).addTo(map);</code></pre>
+    <p>
+      Note that in the most basic version, the control will not be able to do address lookups (geocoding), so you
+      will have to provide the latitude and longitude of the waypoints. See the 
+      <a href="/leaflet-routing-machine/tutorials">tutorials page</a> for information about adding address lookup and much
+      more. You might also want to dive into the <a href="/leaflet-routing-machine/api/">API docs</a> for details.
+    </p>
+
+    <h2>Help, problems and contributing</h2>
+    <p>
+      The plugin is free and open source.
+      <a href="https://github.com/perliedman/leaflet-routing-machine">Leaflet Routing Machine is hosted on GitHub</a>,
+      where you can <a href="https://github.com/perliedman/leaflet-routing-machine/issues">report issues or bugs</a>. 
+    </p>
+    <p>
+      Feedback and help is always welcome in any form: documentation, tutorials or code. Feel free to add a pull request,
+      or contact me at <a href="mailto:per@liedman.net">per@liedman.net</a>.
+    </p>
+
+<script src="/leaflet-routing-machine/index.js"></script>
+
+
+    <hr>
+    Copyright &copy; 2015 Per Liedman, released under <a href="https://raw.githubusercontent.com/perliedman/leaflet-routing-machine/master/LICENSE">ISC License</a>. Logo by <a href="http://thenounproject.com/alexeyivanov">Alexey Ivanov</a>, released under Creative Commons CC-BY 3.0.
+  </div>
+</div>
+
+    <script src="/leaflet-routing-machine/lib/prism.js"></script>
+  </body>
+</html>

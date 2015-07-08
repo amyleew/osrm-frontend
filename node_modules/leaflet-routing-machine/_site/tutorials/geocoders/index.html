@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
+
+    <title>
+      Geocoders tutorial &middot; 
+      Leaflet Routing Machine
+    </title>
+
+    <script src="/leaflet-routing-machine/public/lib/highlight.pack.js"></script>
+
+    <!-- CSS -->
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.css">
+    <![endif]-->
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/normalize.css">
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/skeleton.css">
+    <link rel="stylesheet" href="/leaflet-routing-machine/lib/prism.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/lib/leaflet.iconlabel.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="/leaflet-routing-machine/public/css/site.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="/leaflet-routing-machine/lib/leaflet.iconlabel.js"></script>
+    <script src="/leaflet-routing-machine/lib/Control.Geocoder.js"></script>
+    <script src="/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  </head>
+  <body>
+    <div class="github-fork-ribbon-wrapper right">
+        <div class="github-fork-ribbon">
+            <a href="https://github.com/perliedman/leaflet-routing-machine">Fork me on GitHub</a>
+        </div>
+    </div>
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <header class="hero-header">
+          <h1 class="hero-heading"><a href="/leaflet-routing-machine/">Leaflet Routing Machine</a></h1>
+          <div><img src="/leaflet-routing-machine/public/logo.svg"/></div>
+          <p>Easy, flexible routing for Leaflet</p>
+        </header>
+      </div>
+    </div>
+    <div>
+      <a href="/leaflet-routing-machine/tutorials">&laquo; Back to tutorials</a>
+    </div>
+    <hr>
+
+    <h2>Addresses and geocoders</h2>
+
+<p>Routing and addresses are tightly coupled. Perhaps the most common use case for routing
+if to get from address A to address B, where the user does not necessarily know the
+geographic location of those addresses. Since the routing software can only route
+between locations, latitudes and longitudes, the software needs a way to look up the
+coordinate of an address. This process is known as <em>geocoding</em>, looking up
+the latitude and longitude from an address string.</p>
+
+<p>Likewise, it is common to put a waypoint on the map, and let the system look up the
+address of the waypoint. This is known as <em>reverse geocoding</em>, mapping a
+geographic location to an address string.</p>
+
+<p>Although crucial to routing, Leaflet Routing Machine does not come with a builtin
+geocoder or reverse geocoder. There are quite a few geocoding services available,
+and instead of Leaflet Routing Machine choosing one for you, it lets you connect
+to the geocoding service of your choice. Luckily, adding geocoding is easy.</p>
+
+<h3>Adding a geocoding service</h3>
+
+<p>In Leaflet Routing Machine, geocoders work as a form of plugin. Geocoders must be
+written to conform with the interface used by <a href="https://github.com/perliedman/leaflet-control-geocoder">Leaflet Control Geocoder</a>
+(from the same author as Leaflet Routing Machine). This means that by simply including
+the file
+<a href="https://github.com/perliedman/leaflet-control-geocoder/blob/master/Control.Geocoder.js">Control.Geocoder.js</a>,
+it will be possible to use these geocoding services</p>
+
+<ul>
+<li><a href="http://wiki.openstreetmap.org/wiki/Nominatim">Nominatim</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/ff701715.aspx">Bing Locations API</a></li>
+<li><a href="https://developers.google.com/maps/documentation/geocoding/">Google Geocoding API</a></li>
+<li><a href="https://www.mapbox.com/developers/api/geocoding/">MapQuest Geocoding API</a></li>
+</ul>
+
+
+<p>Once you have a geocoding service loaded, you need to tell Leaflet Routing Machine to use it.
+This is done by adding the option <code>geocoder</code> to the control's options, specifying the geocoder
+instance to use:</p>
+
+<pre data-line="7"><code class="language-javascript">L.Routing.control({
+    waypoints: [
+        L.latLng(57.74, 11.94),
+        L.latLng(57.6792, 11.949)
+    ],
+    routeWhileDragging: true,
+    geocoder: L.Control.Geocoder.nominatim()
+}).addTo(map);</code></pre>
+
+
+<p>See <a href="https://github.com/perliedman/leaflet-control-geocoder#api">Leaflet Control Geocoder's API</a> for
+more information about the classes used, and their options.</p>
+
+<p>Adding a geocoder will change the way the control works in two major ways:</p>
+
+<p>1) Input fields for the waypoints' addresses will be added to the control's panel
+2) Moving a waypoint by dragging it in the map, for example, will automatically look
+up the address of the new location and update the address field</p>
+
+<p>This is an example of what it looks like:</p>
+
+<div id="map-1" class="map"></div>
+
+
+<h3>Autocomplete</h3>
+
+<p>Leaflet Routing Machine supports autocomplete (or type ahead, as it's sometimes called), meaning it
+can try to suggest addresses as the user types in an address field. To use this feature, the
+underlying geocoder service must support it. Support is added by giving the geocoder a method
+called <code>suggest</code>, which takes the same arguments as the <code>geocode</code> method.</p>
+
+<p>Note that the perhaps most commonly used geocoder, Nominatim, does <strong>not</strong> have autocomplete, since
+its <a href="http://wiki.openstreetmap.org/wiki/Nominatim_usage_policy#Unacceptable_Use">usage policy explicitly forbids it</a>.</p>
+
+<p>Below is an example of autocomplete/type ahead, with Mapbox's geocoding service (currently works best
+in the U.S.). Go ahead, select one of the addresses and start typing. When you pause for a bit, suggestions
+based on what you've typed so far will appear.</p>
+
+<div id="map-2" class="map"></div>
+
+
+<h3>Unknown addresses</h3>
+
+<p>As mentioned above, a reverse geocoding will be made every time a waypoint's location changes,
+to reflect its new address. But what happens if there is no address for the location? This typically
+happens the waypoint is placed outside inhabited areas, like in the woods, mountains or similar.</p>
+
+<p>For these cases, Leaflet Routing Machine has a fallback that generates a waypoint name. By default, a
+representation of its latitude and longitude will be used, like "N38.1086, W122.1762".</p>
+
+<p>If you want to override this behaviour, you can provide the option <code>waypointNameFallback</code>, which is
+a function that given the waypoint <code>L.LatLng</code> should return a name. Here's an example of how to replace
+the default with <a href="http://en.wikipedia.org/wiki/Sexagesimal">sexagesimal</a> format of the location:</p>
+
+<pre><code class="language-javascript">L.Routing.control({
+    [...]
+    waypointNameFallback: function(latLng) {
+        function zeroPad(n) {
+            n = Math.round(n);
+            return n &lt; 10 ? '0' + n : n;
+        }
+        function sexagesimal(p, pos, neg) {
+            var n = Math.abs(p),
+                degs = Math.floor(n),
+                mins = (n - degs) * 60,
+                secs = (mins - Math.floor(mins)) * 60,
+                frac = Math.round((secs - Math.floor(secs)) * 100);
+            return (n >= 0 ? pos : neg) + degs + '°' +
+                zeroPad(mins) + '\'' +
+                zeroPad(secs) + '.' + zeroPad(frac) + '"';
+        }
+
+        return sexagesimal(latLng.lat, 'N', 'S') + ' ' + sexagesimal(latLng.lng, 'E', 'W');
+    }
+})</code></pre>
+
+
+<h3>Implementing your own geocoder</h3>
+
+<p>For some cases, you might want to use a geocoding service that is not supported by Leaflet Control
+Geocoder. This can be done easily by implementing the same interface (contract) that for your
+service. <a href="https://github.com/perliedman/leaflet-control-geocoder#igeocoder">IGeocoder</a> lists which
+methods you need to implement; optionally you might want to add <code>suggest</code> as well, as mentioned
+under the Autocomplete heading above.</p>
+
+<p>Then simply pass your own geocoder instance to the <code>geocoder</code> option, just like the examples above.</p>
+
+<script src="index.js"></script>
+
+
+
+    <hr>
+    Copyright &copy; 2015 Per Liedman, released under <a href="https://raw.githubusercontent.com/perliedman/leaflet-routing-machine/master/LICENSE">ISC License</a>. Logo by <a href="http://thenounproject.com/alexeyivanov">Alexey Ivanov</a>, released under Creative Commons CC-BY 3.0.
+  </div>
+</div>
+
+    <script src="/leaflet-routing-machine/lib/prism.js"></script>
+  </body>
+</html>

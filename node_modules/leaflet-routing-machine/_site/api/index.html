@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
+
+    <title>
+      API &middot; 
+      Leaflet Routing Machine
+    </title>
+
+    <script src="http://www.liedman.net/leaflet-routing-machine/public/lib/highlight.pack.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://www.liedman.net/leaflet-routing-machine/public/css/blueprint.screen.css">
+    <link rel="stylesheet" href="http://www.liedman.net/leaflet-routing-machine/public/css/screen.css">
+    <link rel="stylesheet" href="http://www.liedman.net/leaflet-routing-machine/public/css/github.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.css">
+    <![endif]-->
+  </head>
+  <body>
+    <div class="github-fork-ribbon-wrapper right">
+        <div class="github-fork-ribbon">
+            <a href="https://github.com/perliedman/leaflet-routing-machine">Fork me on GitHub</a>
+        </div>
+    </div>
+
+    <header class="masthead">
+    </header>
+
+    <div class="content container">
+      <h1>Leaflet Routing Machine API</h1>
+
+<hr />
+
+<div id="toc" class="clearfix">
+  <div class="span-5 colborder">
+    <h4>Main classes</h4>
+    <ul>
+      <li><a href="#l-routing-control">L.Routing.Control</a></li>
+      <li><a href="#l-routing-itinerary">L.Routing.Itinerary</a></li>
+      <li><a href="#l-routing-plan">L.Routing.Plan</a></li>
+      <li><a href="#l-routing-line">L.Routing.Line</a></li>
+      <li><a href="#l-routing-osrm">L.Routing.OSRM</a></li>
+      <li><a href="#l-routing-formatter">L.Routing.Formatter</a></li>
+      <li><a href="#l-routing-itinerarybuilder">L.Routing.ItineraryBuilder</a></li>
+      <li><a href="#l-routing-localization">L.Routing.Localization</a></li>
+      <li><a href="#l-routing-waypoint">L.Routing.Waypoint</a></li>
+      <li><a href="#eventobjects">Event Objects</a></li>
+    </ul>
+  </div>
+  <div class="span-5">
+    <h4>Interfaces</h4>
+    <ul>
+      <li><a href="#irouter">IRouter</a></li>
+      <li><a href="#iroute">IRoute</a></li>
+      <li><a href="#iroutesummary">IRouteSummary</a></li>
+      <li><a href="#iinstruction">IInstruction</a></li>
+      <li><a href="#igeocoderelement">IGeocoderElement</a></li>
+      <li><a href="#ierror">IError</a></li>
+    </ul>
+  </div>
+</div>
+
+
+<h2><a name="l-routing-control"></a>L.Routing.Control</h2>
+
+<p>Combining the other classes into a full routing user interface. The main class of the plugin. Extends <a href="#l-routing-itinerary">L.Routing.Itinerary</a> and implements <a href="http://leafletjs.com/reference.html#icontrol">IControl</a>.</p>
+
+<h3>Usage example</h3>
+
+<pre><code class="javascript">var map = L.map('map');
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&amp;copy; &lt;a href="http://osm.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
+}).addTo(map);
+
+L.Routing.control({
+    waypoints: [
+        L.latLng(57.74, 11.94),
+        L.latLng(57.6792, 11.949)
+    ]
+}).addTo(map);
+</code></pre>
+
+<h3>Creation</h3>
+
+<table>
+<thead>
+<tr>
+<th>Factory                </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L.Routing.control(&lt;</code><a href="#routingcontroloptions"><code>RoutingControlOptions</code></a><code>&gt; options?)</code> </td>
+<td> Instantiates a new routing control with the provided options; unless specific <code>router</code> and/or <code>plan</code> instances are provided, <code>options</code> are also passed to their constructors</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="routingcontroloptions"></a> Options</h3>
+
+<p>Provides these options, in addition to the options of <a href="#itineraryoptions"><code>L.Routing.Itinerary</code></a>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Option                 </th>
+<th> Type                </th>
+<th> Default       </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>waypoints</code>            </td>
+<td> <a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]</code> or <code>L.LatLng[]</code> </td>
+<td> [] </td>
+<td> Initial waypoints for the control</td>
+</tr>
+<tr>
+<td><code>router</code>               </td>
+<td> <a href="#irouter"><code>IRouter</code></a> </td>
+<td> <code>new L.Routing.OSRM(options)</code> </td>
+<td> The router to use to calculate routes between waypoints</td>
+</tr>
+<tr>
+<td><code>plan</code>                 </td>
+<td> <a href="#l-routing-plan"><code>L.Routing.Plan</code></a> </td>
+<td> <code>new L.Routing.Plan(options.waypoints, options)</code> </td>
+<td> The plan to use to store and edit the route's waypoints</td>
+</tr>
+<tr>
+<td><code>geocoder</code>                 </td>
+<td> <a href="https://github.com/perliedman/leaflet-control-geocoder#igeocoder"><code>IGeocoder</code></a> </td>
+<td> - </td>
+<td> Optional geocoder to use, unless the <code>plan</code> option is used</td>
+</tr>
+<tr>
+<td><code>fitSelectedRoutes</code>    </td>
+<td> <code>string</code>/<code>Boolean</code>    </td>
+<td> <code>'smart'</code>       </td>
+<td> How the map's view is fitted to a selected route result: <code>smart</code> will fit only if no waypoint is within the current view, or if the result covers a very small part of the view; other truthy values will always fit the map, falsy will never fit the map</td>
+</tr>
+<tr>
+<td><code>routeLine</code>            </td>
+<td> <code>`Function</code>           </td>
+<td> -               </td>
+<td> Function to create the map line when a route is presented on the map, with the signature: <code>fn(&lt;</code><a href="#iroute"><code>IRoute</code></a><code>&gt; route, &lt;</code><a href="#lineoptions"><code>LineOptions</code></a><code>&gt; options)</code></td>
+</tr>
+<tr>
+<td><code>autoRoute</code>            </td>
+<td> <code>Boolean</code>             </td>
+<td> <code>true</code>          </td>
+<td> If true, route will automatically be calculated every time waypoints change, otherwise <code>route()</code> has to be called by the app</td>
+</tr>
+<tr>
+<td><code>routeWhileDragging</code>   </td>
+<td> <code>Boolean</code>             </td>
+<td> <code>false</code>         </td>
+<td> If true, routes will continually be calculated while the user drags waypoints, giving immediate feedback</td>
+</tr>
+<tr>
+<td><code>routeDragInterval</code>    </td>
+<td> <code>Number</code>              </td>
+<td> <code>500</code>           </td>
+<td> The minimum number of milliseconds between route calculations when waypoints are dragged</td>
+</tr>
+<tr>
+<td><code>waypointMode</code>         </td>
+<td> <code>String</code>              </td>
+<td> <code>connect</code>       </td>
+<td> Set to either <code>connect</code> (waypoints are connected by a line to the closest point on the calculated route) or <code>snap</code> (waypoints are moved to the closest point on the calculated route)</td>
+</tr>
+<tr>
+<td><code>useZoomParameter</code>     </td>
+<td> <code>Boolean</code>             </td>
+<td> <code>false</code>         </td>
+<td> If true, route will be recalculated when the map is zoomed</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Events</h3>
+
+<p>Fires these events, in addition the the events used by <a href="#l-routing-itinerary"><code>L.Routing.Itinerary</code></a>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Event         </th>
+<th> Data           </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routingstart</code>  </td>
+<td> <a href="#routingevent"><code>RoutingEvent</code></a> </td>
+<td> Fires when the control starts calculating a route; followed by either a <code>routesfound</code> or <code>routingerror</code> event</td>
+</tr>
+<tr>
+<td><code>routesfound</code> </td>
+<td> <a href="#routingresultevent"><code>RoutingResultEvent</code></a> </td>
+<td> One or more routes where found</td>
+</tr>
+<tr>
+<td><code>routingerror</code> </td>
+<td> <a href="#routingerrorevent"><code>RoutingErrorEvent</code></a> </td>
+<td> An error occured while calculating the route between waypoints</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Methods</h3>
+
+<table>
+<thead>
+<tr>
+<th>Method                 </th>
+<th> Returns        </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getWaypoints()</code>       </td>
+<td> <a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]</code> </td>
+<td> Returns the waypoints of the control's plan</td>
+</tr>
+<tr>
+<td><code>setWaypoints(&lt;</code><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]&gt; waypoints | &lt;L.LatLng[]&gt; latLngs)</code> </td>
+<td> <code>this</code> </td>
+<td> Sets the waypoints of the control's plan</td>
+</tr>
+<tr>
+<td><code>spliceWaypoints(&lt;Number&gt; index, &lt;Number&gt; waypointsToRemove, &lt;</code><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>? | L.LatLng?&gt;, ...)</code> </td>
+<td> <a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]</code> </td>
+<td> Allows adding, removing or replacing waypoints in the control's plan. Syntax is the same as in <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/splice">Array#splice</a>. Returns the array of removed points (if any).</td>
+</tr>
+<tr>
+<td><code>getPlan()</code>            </td>
+<td> <a href="#l-routing-plan"><code>L.Routing.Plan</code></a> </td>
+<td> Returns the plan instance used by the control</td>
+</tr>
+<tr>
+<td><code>getRouter()</code>          </td>
+<td> <a href="#irouter"><code>IRouter</code></a> </td>
+<td> Returns the router used by the control</td>
+</tr>
+<tr>
+<td><code>route()</code>              </td>
+<td> -              </td>
+<td> Calculates the route between the current waypoints and presents in the itinerary, displaying the first result on the map</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="l-routing-itinerary"></a> L.Routing.Itinerary</h2>
+
+<p>A widget to display itineraries as text in a control. Also serves as the base class for <a href="#l-routing-control"><code>L.Routing.Control</code></a>. Implements <a href="http://leafletjs.com/reference.html#icontrol">IControl</a>.</p>
+
+<h3>Creation</h3>
+
+<table>
+<thead>
+<tr>
+<th>Factory                </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L.Routing.itinerary(&lt;</code><a href="#itineraryoptions"><code>ItineraryOptions</code></a><code>&gt; options?)</code> </td>
+<td> Instantiates a new itinerary widget with the provided options</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="itineraryoptions"></a> Options</h3>
+
+<table>
+<thead>
+<tr>
+<th>Option                 </th>
+<th> Type     </th>
+<th> Default             </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pointMarkerStyle</code>     </td>
+<td> <a href="http://leafletjs.com/reference.html#path-options"><code>Path options</code></a> </td>
+<td> <code>{radius: 5,color: '#03f',fillColor: 'white',opacity: 1,fillOpacity: 0.7}</code></td>
+<td> Style for the <a href="http://leafletjs.com/reference.html#circlemarker">CircleMarker</a>s used when hovering an itinerary instruction</td>
+</tr>
+<tr>
+<td><code>summaryTemplate</code>      </td>
+<td> <code>String</code> </td>
+<td> <code>'&lt;h2&gt;{name}&lt;/h2&gt;&lt;h3&gt;{distance}, {time}&lt;/h3&gt;'</code> </td>
+<td> String template to use for summarizing a route; the template is passed properties <code>name</code>, <code>distance</code> and <code>time</code>, where the latter two has already been processed through <code>distanceTemplate</code> and <code>timeTemplate</code> respectively</td>
+</tr>
+<tr>
+<td><code>distanceTemplate</code>     </td>
+<td> <code>String</code> </td>
+<td> <code>'{value} {unit}'</code>  </td>
+<td> String template to use for formatting distances as a string; passed properties <code>value</code> and <code>unit</code></td>
+</tr>
+<tr>
+<td><code>timeTemplate</code>         </td>
+<td> <code>String</code> </td>
+<td> <code>'{time}'</code>          </td>
+<td> String template to use for formatting times as a string; passed property <code>time</code></td>
+</tr>
+<tr>
+<td><code>containerClassName</code>   </td>
+<td> <code>String</code> </td>
+<td> <code>''</code>                </td>
+<td> Class name to add for the widget's container element</td>
+</tr>
+<tr>
+<td><code>alternativeClassName</code> </td>
+<td> <code>String</code> </td>
+<td> <code>''</code>                </td>
+<td> Class name to add to routing alternatives' elements</td>
+</tr>
+<tr>
+<td><code>minimizedClassName</code>   </td>
+<td> <code>String</code> </td>
+<td> <code>''</code>                </td>
+<td> Class name to add to minimized routing alternatives' elements</td>
+</tr>
+<tr>
+<td><code>itineraryClassName</code>   </td>
+<td> <code>String</code> </td>
+<td> <code>''</code>                </td>
+<td> Class name to add to route itinerary container</td>
+</tr>
+<tr>
+<td><code>show</code>                 </td>
+<td> <code>Boolean</code></td>
+<td> <code>true</code>              </td>
+<td> Display the itinerary initially; can later be changed with <code>hide()</code>and <code>show()</code> methods</td>
+</tr>
+<tr>
+<td><code>formatter</code>            </td>
+<td> <a href="#l-routing-formatter"><code>Formatter</code></a> </td>
+<td> <code>new L.Routing.Formatter()</code> </td>
+<td> The formatter to use when converting itinerary instructions, distances and times to strings</td>
+</tr>
+<tr>
+<td><code>itineraryFormatter</code>   </td>
+<td> <a href="#l-routing-itinerarybuilder"><code>ItineraryBuilder</code></a> </td>
+<td> - </td>
+<td> Object used to create the DOM structure for the itinerary and its instructions. Default uses a <code>table</code> to hold the itinerary</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Events</h3>
+
+<table>
+<thead>
+<tr>
+<th>Event         </th>
+<th> Data           </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routeselected</code>  </td>
+<td> <a href="#routeselectedevent"><code>RouteSelectedEvent</code></a> </td>
+<td> Fires when a routing alternative is selected and its itinerary is displayed</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Methods</h3>
+
+<table>
+<thead>
+<tr>
+<th>Method                 </th>
+<th> Returns        </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setAlternatives(&lt;</code><a href="#iroute"><code>IRoute</code></a><code>[]&gt; alternatives)</code>    </td>
+<td> <code>this</code> </td>
+<td> Sets the routing alternatives to display itineraries for</td>
+</tr>
+<tr>
+<td><code>hide()</code>               </td>
+<td> <code>this</code>         </td>
+<td> Hides the itinerary control</td>
+</tr>
+<tr>
+<td><code>show()</code>               </td>
+<td> <code>this</code>         </td>
+<td> Shows the itinerary control</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="l-routing-plan"></a> L.Routing.Plan</h2>
+
+<p>User interface to edit the plan for a route (an ordered list of waypoints). Implements <a href="http://leafletjs.com/reference.html#ilayer">ILayer</a>.</p>
+
+<h3>Creation</h3>
+
+<table>
+<thead>
+<tr>
+<th>Factory                </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L.Routing.plan(&lt;</code><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[] | L.LatLng[]&gt; waypoints, &lt;</code><a href="#planoptions"><code>PlanOptions</code></a><code>&gt; options?)</code> </td>
+<td> Instantiates a new plan with given waypoint locations and options</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="planoptions"></a> Options</h3>
+
+<table>
+<thead>
+<tr>
+<th>Option                 </th>
+<th> Type                </th>
+<th> Default       </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>geocoder</code>             </td>
+<td> <a href="https://github.com/perliedman/leaflet-control-geocoder#igeocoder"><code>IGeocoder</code></a> </td>
+<td> <code>-</code> </td>
+<td> The geocoder to use (both address lookup and reverse geocoding when dragging waypoints)</td>
+</tr>
+<tr>
+<td><code>addWaypoints</code>         </td>
+<td> <code>Boolean</code>           </td>
+<td> <code>true</code>        </td>
+<td> Can new waypoints be added by the user</td>
+</tr>
+<tr>
+<td><code>draggableWaypoints</code>   </td>
+<td> <code>Boolean</code>           </td>
+<td> <code>true</code>        </td>
+<td> Can waypoints be dragged in the map</td>
+</tr>
+<tr>
+<td><code>dragStyles</code>           </td>
+<td> <a href="http://leafletjs.com/reference.html#path-options"><code>Path options</code></a><code>[]</code> </td>
+<td> <code>[{color: 'black', opacity: 0.15, weight: 7}, {color: 'white', opacity: 0.8, weight: 4}, {color: 'orange', opacity: 1, weight: 2, dashArray: '7,12'}]</code></td>
+<td> Styles used for the line or lines drawn when dragging a waypoint</td>
+</tr>
+<tr>
+<td><code>maxGeocoderTolerance</code> </td>
+<td> <code>Number</code>            </td>
+<td> <code>200</code>         </td>
+<td> Maximum distance in meters from a reverse geocoding result to a waypoint, to consider the address valid</td>
+</tr>
+<tr>
+<td><code>geocoderPlaceholder</code>  </td>
+<td> <code>Function</code>          </td>
+<td> -             </td>
+<td> Function to generate placeholder text for a waypoint geocoder: <code>placeholder(&lt;Number&gt; waypointIndex, &lt;Number&gt; numberWaypoints)</code>; by default, gives text "Start" for first waypoint, "End" for last, and "Via x" in between</td>
+</tr>
+<tr>
+<td><code>geocodersClassName</code>   </td>
+<td> <code>String</code>            </td>
+<td> <code>''</code>          </td>
+<td> HTML classname to assign to geocoders container</td>
+</tr>
+<tr>
+<td><code>geocoderClass</code>        </td>
+<td> <code>String</code>            </td>
+<td> <code>''</code>          </td>
+<td> HTML classname to assign to individual geocoder inputs</td>
+</tr>
+<tr>
+<td><code>waypointNameFallback</code> </td>
+<td> <code>Function</code>          </td>
+<td> -             </td>
+<td> When a waypoint's name can't be reverse geocoded, this function will be called to generate a name. Default will give a name based on the waypoint's latitude and longitude.</td>
+</tr>
+<tr>
+<td><code>createGeocoder</code>       </td>
+<td> <code>Function</code>          </td>
+<td> -             </td>
+<td> Create a geocoder for a waypoint; should take the waypoints index as argument and return an <a href="#igeocoderelement"><code>IGeocoderElement</code></a></td>
+</tr>
+<tr>
+<td><code>addButtonClassName</code>   </td>
+<td> <code>String</code>            </td>
+<td> <code>''</code>          </td>
+<td> HTML classname to assign to the add waypoint button</td>
+</tr>
+<tr>
+<td><code>createMarker</code>         </td>
+<td> <code>Function</code>          </td>
+<td> -             </td>
+<td> Creates a marker to use for a waypoint. The function should have the signature <code>createMarker(&lt;Number&gt; i, &lt;[</code>L.Routing.Waypoint<code>](#l-routing-waypoint)</code>> waypoint, <Number> n)<code>, where</code>i<code>is the waypoint's index,</code>waypoint<code>is the waypoint itself, and</code>n` is the total number of waypoints in the plan; if return value is falsy, no marker is added for the waypoint</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Events</h3>
+
+<table>
+<thead>
+<tr>
+<th>Event         </th>
+<th> Data           </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>waypointschanged</code>  </td>
+<td> <a href="#routingevent"><code>RoutingEvent</code></a> </td>
+<td> Fired when one or more waypoints change (added, deleted, moved)</td>
+</tr>
+<tr>
+<td><code>waypointsspliced</code>  </td>
+<td> <a href="#waypointssplicedevent"><code>WaypointsSplicedEvent</code></a> </td>
+<td> Also fired when waypoints changed, but includes more finegrained details on actual changes, like a call to <code>Array.splice</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Methods</h3>
+
+<table>
+<thead>
+<tr>
+<th>Method                 </th>
+<th> Returns        </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>isReady()</code>            </td>
+<td> <code>Boolean</code>      </td>
+<td> Returns <code>true</code> if the plan is ready to be routed, meaning it has at least a start and end waypoint, and both have coordinates</td>
+</tr>
+<tr>
+<td><code>getWaypoints()</code>       </td>
+<td> <a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]</code> </td>
+<td> Returns the plan's waypoints</td>
+</tr>
+<tr>
+<td><code>setWaypoints(&lt;</code><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]&gt; waypoints | &lt;L.LatLng[]&gt; latLngs)</code> </td>
+<td> <code>this</code> </td>
+<td> Sets the plan's waypoints</td>
+</tr>
+<tr>
+<td><code>spliceWaypoints(&lt;Number&gt; index, &lt;Number&gt; waypointsToRemove, &lt;</code><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>? | L.LatLng?&gt;, ...)</code> </td>
+<td> <a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]</code> </td>
+<td> Allows adding, removing or replacing the plan's waypoints. Syntax is the same as in <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/splice">Array#splice</a>. Returns the array of removed points (if any).</td>
+</tr>
+<tr>
+<td><code>createGeocoders()</code>    </td>
+<td> <code>HTMLElement</code>  </td>
+<td> Creates and returns an HTML widget with geocoder input fields for editing waypoints by address</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="l-routing-line"></a> L.Routing.Line</h2>
+
+<p>Displays a route on the map, and allows adding new waypoints by dragging the line. Extends <a href="http://leafletjs.com/reference.html#layergroup">LayerGroup</a>.</p>
+
+<h3>Creation</h3>
+
+<table>
+<thead>
+<tr>
+<th>Factory                </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L.Routing.line(&lt;</code><a href="#iroute"><code>IRoute</code></a><code>&gt; route, &lt;</code><a href="#lineoptions"><code>LineOptions</code></a><code>&gt; options?)</code> </td>
+<td> Instantiates a new line for the given route and provided options</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="lineoptions"></a> Options</h3>
+
+<table>
+<thead>
+<tr>
+<th>Option                 </th>
+<th> Type     </th>
+<th> Default             </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>styles</code>           </td>
+<td> <a href="http://leafletjs.com/reference.html#path-options"><code>Path options</code></a><code>[]</code> </td>
+<td> <code>[{color: 'black', opacity: 0.15, weight: 9}, {color: 'white', opacity: 0.8, weight: 6}, {color: 'red', opacity: 1, weight: 2}]</code></td>
+<td> Styles used for the line or lines drawn to represent the line</td>
+</tr>
+<tr>
+<td><code>addWaypoints</code>         </td>
+<td> <code>Boolean</code></td>
+<td> <code>true</code>              </td>
+<td> Can new waypoints be added by dragging the line</td>
+</tr>
+<tr>
+<td><code>missingRouteStyles</code>   </td>
+<td> <a href="http://leafletjs.com/reference.html#path-options"><code>Path options</code></a><code>[]</code> </td>
+<td> <code>[{color: 'black', opacity: 0.15, weight: 7},{color: 'white', opacity: 0.6, weight: 4},{color: 'gray', opacity: 0.8, weight: 2, dashArray: '7,12'}]</code> </td>
+<td> Styles used for the line or lines drawn to connect waypoints to the closest point on the calculated route (the non-routable part)</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Events</h3>
+
+<table>
+<thead>
+<tr>
+<th>Event         </th>
+<th> Data           </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>linetouched</code> </td>
+<td> <a href="#linetouchedevent"><code>LineTouchedEvent</code></a> </td>
+<td> Fires when the line is touched (tapped or clicked)</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Methods</h3>
+
+<table>
+<thead>
+<tr>
+<th>Method                 </th>
+<th> Returns         </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getBounds()</code>          </td>
+<td> <code>L.LatLngBounds</code></td>
+<td> Returns the bounds of the line</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="l-routing-osrm"></a> L.Routing.OSRM</h2>
+
+<p>Handles communication with the OSRM backend, building the request and parsing the response. Implements <a href="#irouter">IRouter</a>.</p>
+
+<p>See <a href="https://github.com/Project-OSRM/osrm-backend/wiki/Server-api">OSRM Server API</a> for the specification this implementation
+is built on.</p>
+
+<h3>Creation</h3>
+
+<table>
+<thead>
+<tr>
+<th>Factory                </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L.Routing.osrm(&lt;</code><a href="#osrmoptions"><code>OSRMOptions</code></a><code>&gt; options?)</code> </td>
+<td> Instantiates a new router with the provided options</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="osrmoptions"></a> Options</h3>
+
+<table>
+<thead>
+<tr>
+<th>Option                 </th>
+<th> Type     </th>
+<th> Default             </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>serviceUrl</code>           </td>
+<td> <code>String</code> </td>
+<td> <code>//router.project-osrm.org/viaroute</code> </td>
+<td> Router service URL</td>
+</tr>
+<tr>
+<td><code>timeout</code>              </td>
+<td> <code>Number</code> </td>
+<td> 30000               </td>
+<td> Number of milliseconds before a route calculation times out, returning an error to the routing callback</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Methods</h3>
+
+<table>
+<thead>
+<tr>
+<th>Method                 </th>
+<th> Returns         </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>route(&lt;</code><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]&gt; waypoints, &lt;Function&gt; callback, &lt;Object&gt; context?), &lt;</code><a href="#routingoptions"><code>RoutingOptions</code></a><code>&gt; options)</code> </td>
+<td> - </td>
+<td> attempt to route through the provided waypoints, where each waypoint is an <code>L.Routing.Waypoint</code>. Calls <code>callback(&lt;</code><a href="#ierror"><code>IError</code></a><code>&gt; err?, &lt;</code><a href="#iroute"><code>IRoute</code></a><code>[]&gt; routes?)</code> in the provided <code>context</code> when done or if an error is encountered</td>
+</tr>
+<tr>
+<td><code>buildRouteUrl(&lt;</code><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]&gt; waypoints, &lt;</code><a href="#routingoptions"><code>RoutingOptions</code></a><code>&gt; options)</code> </td>
+<td> <code>String</code> </td>
+<td> Returns the URL to calculate the route between the given waypoints; typically used for downloading the route in some other file format</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="routingoptions"></a> RoutingOptions</h2>
+
+<table>
+<thead>
+<tr>
+<th>Option                 </th>
+<th> Type      </th>
+<th> Default             </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>z</code>                    </td>
+<td> <code>Number</code>  </td>
+<td> -                   </td>
+<td> Current zoom level when the request was made</td>
+</tr>
+<tr>
+<td><code>allowUTurns</code>          </td>
+<td> <code>Boolean</code> </td>
+<td> -                   </td>
+<td> If U-turns are allowed in this route (migh only be applicable for OSRM backend)</td>
+</tr>
+<tr>
+<td><code>geometryOnly</code>         </td>
+<td> <code>Boolean</code> </td>
+<td> <code>false</code>             </td>
+<td> If true, try to save bandwidth by just giving the route geometry; also, multiple results are not required (typically used for route preview when dragging a waypoint)</td>
+</tr>
+<tr>
+<td><code>fileFormat</code>           </td>
+<td> <code>String</code>  </td>
+<td> -                   </td>
+<td> Fileformat to return</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="l-routing-formatter"></a> L.Routing.Formatter</h2>
+
+<p>Implements functions to convert distances and times to strings, as well as converting an <a href="#iinstruction"><code>IInstruction</code></a> to a string. Override or implement your own if you need to customize formatting.</p>
+
+<h3>Creation</h3>
+
+<table>
+<thead>
+<tr>
+<th>Constructor                </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L.Routing.Formatter(&lt;</code><a href="#formatteroptions"><code>FormatterOptions</code></a><code>&gt; options?)</code> </td>
+<td> Instantiates a new formatter with the provided options</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="formatteroptions"></a> Options</h3>
+
+<table>
+<thead>
+<tr>
+<th>Option                 </th>
+<th> Type     </th>
+<th> Default             </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>language</code>             </td>
+<td> <code>String</code> </td>
+<td> <code>'en'</code>              </td>
+<td> Language to use from <a href="#l-routing-localization"><code>L.Routing.Localization</code></a></td>
+</tr>
+<tr>
+<td><code>units</code>                </td>
+<td> <code>String</code> </td>
+<td> <code>'metric'</code>          </td>
+<td> Units to use; <code>'metric'</code> or <code>'imperial'</code></td>
+</tr>
+<tr>
+<td><code>roundingSensitivity</code>  </td>
+<td> <code>Number</code> </td>
+<td> <code>1</code>                 </td>
+<td> How much rounding should be applied to distances; higher means more rounded, lower more accurate</td>
+</tr>
+<tr>
+<td><code>unitNames</code>            </td>
+<td> <code>Object</code> </td>
+<td> <code>{meters: 'm',kilometers: 'km',yards: 'yd',miles: 'mi',hours: 'h',minutes: 'mín',seconds: 's'}</code> </td>
+<td> Hash of unit names to use</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Methods</h3>
+
+<table>
+<thead>
+<tr>
+<th>Method                 </th>
+<th> Returns         </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>formatDistance(&lt;Number&gt; d)</code> </td>
+<td> <code>String</code>  </td>
+<td> Formats a distance given in meters to a string with suitable precision and unit</td>
+</tr>
+<tr>
+<td>`formatTime(<Number> t) </td>
+<td> <code>String</code>       </td>
+<td> Formats a time duration, given in seconds, to a string with suitable precision and unit</td>
+</tr>
+<tr>
+<td><code>formatInstruction(&lt;</code><a href="#iinstruction"><code>IInstruction</code></a><code>&gt; instr)</code> </td>
+<td> String </td>
+<td> Formats an instruction to a human readable text</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="iitinerarybuilder"></a>ItineraryBuilder</h2>
+
+<p>Creates the DOM structure for an itinerary. Subclass or reimplement to create your own itinerary structure.</p>
+
+<h3>Methods</h3>
+
+<table>
+<thead>
+<tr>
+<th>Method                                </th>
+<th> Returns        </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createContainer(&lt;String&gt; className)</code> </td>
+<td> <code>HTMLElement</code>  </td>
+<td> Create the container in which the itinerary will be put; default will create a <code>table</code></td>
+</tr>
+<tr>
+<td>`createStepsContainer(<HTMLElement> container) </td>
+<td> <code>HTMLElement</code> </td>
+<td> Create the container for the instructions/steps; default will create a <code>tbody</code></td>
+</tr>
+<tr>
+<td>`createStep(<String> text, <String> distance, <HTMLElement> steps) </td>
+<td> <code>HTMLElement</code> </td>
+<td> Creates a DOM element for an instruction, with the provided text and distance (already formatted as string with unit); default will create a <code>tr</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="l-routing-localization"></a>L.Routing.Localization</h2>
+
+<p>Contains localization for strings used by the control. The object is a simple hash with language code as key.</p>
+
+<h2><a name="l-routing-waypoint"></a> L.Routing.Waypoint</h2>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type         </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>latLng</code>      </td>
+<td> <code>L.LatLng</code>  </td>
+<td> geographic location of the waypoint</td>
+</tr>
+<tr>
+<td><code>name</code>        </td>
+<td> <code>String?</code>   </td>
+<td> name of the waypoint, typically an address; optional and possibly <code>null</code> or <code>undefined</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="eventobjects"></a> Event Objects</h2>
+
+<h3><a name="routingevent"></a>RoutingEvent</h3>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type        </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>waypoints     </td>
+<td><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]</code>  </td>
+<td> The waypoints of the related route</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="routingresultevent"></a> RoutingResultEvent</h3>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type        </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>waypoints     </td>
+<td><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]</code>  </td>
+<td> The waypoints of the related route</td>
+</tr>
+<tr>
+<td>routes        </td>
+<td><a href="#iroute"><code>IRoute</code></a><code>[]</code>        </td>
+<td> The routing alternatives</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="routingerrorevent"></a> RoutingErrorEvent</h3>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type        </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error         </td>
+<td> <a href="#ierror"><code>IError</code></a>  </td>
+<td> Error object, as passed by the current <a href="#irouter"><code>IRouter</code></a></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="routeselectedevent"></a> RouteSelectedEvent</h3>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type        </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>route     </td>
+<td><a href="#iroute"><code>IRoute</code></a>  </td>
+<td> The selected route</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="waypointssplicedevent"></a> WaypointsSplicedEvent</h3>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type        </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index</code>       </td>
+<td> <code>Number</code>    </td>
+<td> Index of modification</td>
+</tr>
+<tr>
+<td><code>nRemoved</code>    </td>
+<td> <code>Number</code>    </td>
+<td> Number of items removed</td>
+</tr>
+<tr>
+<td><code>added</code>       </td>
+<td> <a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]</code> </td>
+<td> Added waypoints</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a name="linetouchedevent"></a> LineTouchedEvent</h3>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type        </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>afterIndex</code>  </td>
+<td> <code>Number</code>    </td>
+<td> Index of the waypoint closest before the location where the line was touched</td>
+</tr>
+<tr>
+<td><code>latlng</code>      </td>
+<td> <code>Number</code>    </td>
+<td> Location where the line was touched</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="irouter"></a> IRouter</h2>
+
+<h3>Methods</h3>
+
+<table>
+<thead>
+<tr>
+<th>Method                 </th>
+<th> Returns        </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>route(&lt;</code><a href="#l-routing-waypoint"><code>L.Routing.Waypoint</code></a><code>[]&gt; waypoints, &lt;Function&gt; callback, &lt;Object&gt; context?), &lt;</code><a href="#routingoptions"><code>RoutingOptions</code></a><code>&gt; options)</code> </td>
+<td> - </td>
+<td> attempt to route through the provided waypoints, where each waypoint is an <code>L.Routing.Waypoint</code>. Calls <code>callback(&lt;</code><a href="#ierror"><code>IError</code></a><code>&gt; err?, &lt;</code><a href="#iroute"><code>IRoute</code></a><code>[]&gt; routes?)</code> in the provided <code>context</code> when done or if an error is encountered</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="iroute"></a> IRoute</h2>
+
+<p>Describes a route through a number of waypoints.</p>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type            </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code>        </td>
+<td> <code>String</code>        </td>
+<td> a descriptive name for this route</td>
+</tr>
+<tr>
+<td><code>summary</code>     </td>
+<td> <a href="#iroutesummary"><code>IRouteSummary</code></a> </td>
+<td> summary of the route</td>
+</tr>
+<tr>
+<td><code>coordinates</code> </td>
+<td> <code>L.LatLng</code>[]  </td>
+<td> an array of <code>L.LatLng</code>s that can be used to visualize the route; the level of detail should be high, since Leaflet will simplify the line appropriately when it is displayed</td>
+</tr>
+<tr>
+<td><code>waypoints</code> - </td>
+<td> <code>L.LatLng</code>[]  </td>
+<td> the waypoints for this route</td>
+</tr>
+<tr>
+<td><code>instructions</code></td>
+<td> <a href="#iinstruction"><code>IInstruction</code></a><code>[]</code> </td>
+<td> instructions for this route</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="iroutesummary"></a>IRouteSummary</h2>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th>type        </th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>totalTime</code>   </td>
+<td><code>Number</code>      </td>
+<td>estimated time for the route, in seconds</td>
+</tr>
+<tr>
+<td><code>totalDistance</code></td>
+<td><code>Number</code>     </td>
+<td>distance for the route, in meters</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="iinstruction"></a>IInstruction</h2>
+
+<p>Describes a part of a route's itinerary, such as a turn. Can be of two types: either
+a <code>text</code> property containing the exact text to be shown to the user, a number of
+properties that describe the instruction in an abstract form; the latter can later be
+translated to different languages, while explicit text can't.</p>
+
+<h3>Properties</h3>
+
+<p>Mandatory:</p>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type        </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>distance</code>    </td>
+<td> <code>Number</code>    </td>
+<td> distance in meters for this segment</td>
+</tr>
+<tr>
+<td><code>time</code>        </td>
+<td> <code>Number</code>    </td>
+<td> estimated time in seconds for this segment</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Combined with either:</p>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type        </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code>        </td>
+<td> String      </td>
+<td> explicit instruction text</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>or:</p>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type        </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code>        </td>
+<td> <code>String</code>    </td>
+<td> one of the enumerated instruction types (see below)</td>
+</tr>
+<tr>
+<td><code>road</code>        </td>
+<td> <code>String</code>    </td>
+<td> name of road for this segment, if available</td>
+</tr>
+<tr>
+<td><code>direction</code>   </td>
+<td> <code>String</code>    </td>
+<td> aproximate compass direction: N, NE, E, SE, S, SW, W, NW</td>
+</tr>
+<tr>
+<td><code>exit</code>        </td>
+<td> <code>Integer</code>   </td>
+<td> for roundabouts, designates the number of the exit to take</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Types</h3>
+
+<ul>
+<li><code>Straight</code></li>
+<li><code>SlightRight</code></li>
+<li><code>Right</code></li>
+<li><code>SharpRight</code></li>
+<li><code>TurnAround</code></li>
+<li><code>SharpLeft</code></li>
+<li><code>Left</code></li>
+<li><code>SlightLeft</code></li>
+<li><code>WaypointReached</code></li>
+<li><code>Roundabout</code></li>
+<li><code>StartAt</code></li>
+<li><code>DestinationReached</code></li>
+<li><code>EnterAgainstAllowedDirection</code></li>
+<li><code>LeaveAgainstAllowedDirection</code></li>
+</ul>
+
+
+<h2><a name="igeocoderelement"></a>IGeocoderElement</h2>
+
+<table>
+<thead>
+<tr>
+<th>property      </th>
+<th> type          </th>
+<th> description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>container</code>   </td>
+<td> <code>HTMLElement</code> </td>
+<td> The main element of the geocoder, that is added to the control</td>
+</tr>
+<tr>
+<td><code>input</code>       </td>
+<td> <code>HTMLElement</code> </td>
+<td> Input element where the geocoder's <code>value</code> can be get and set</td>
+</tr>
+<tr>
+<td><code>closeButton</code> </td>
+<td> <code>HTMLElement</code> </td>
+<td> Optional element which, when clicked, removes the corresponding waypoint</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2><a name="ierror"></a> IError</h2>
+
+<h3>Properties</h3>
+
+<ul>
+<li><code>status</code>: status/error code (possibly technical); string or number</li>
+<li><code>message</code>: human-readable error message</li>
+</ul>
+
+
+    </div>
+
+    <script>
+      hljs.tabReplace = '    ';
+      hljs.initHighlighting();
+    </script>
+  </body>
+</html>
