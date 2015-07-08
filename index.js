@@ -1,12 +1,15 @@
 'use strict';
 
+L.mapbox.accessToken = localStorage.getItem('access_token');
+
 var Geocoder = require('leaflet-control-geocoder');
 require('leaflet-routing-machine');
 
 var options = require('./src/lrm_options');
-var map = L.map('map').setView([51.505, -0.09], 13);
+var defaultView = require('./src/leaflet_options');
+var map = L.map('map').setView([defaultView.centerLat, defaultView.centerLng], defaultView.zoom);
 
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+L.tileLayer(defaultView.layer.MapboxEmerald.tileLayer).addTo(map);
 
 var ReversablePlan = L.Routing.Plan.extend({
   createGeocoders: function() {
