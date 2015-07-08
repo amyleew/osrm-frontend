@@ -1,6 +1,6 @@
 'use strict';
 
-L.mapbox.accessToken = localStorage.getItem('access_token');
+L.mapbox.accessToken = window.localStorage.getItem('mapbox_access_token');
 
 var Geocoder = require('leaflet-control-geocoder');
 require('leaflet-routing-machine');
@@ -9,7 +9,7 @@ var options = require('./src/lrm_options');
 var defaultView = require('./src/leaflet_options');
 var map = L.map('map').setView([defaultView.centerLat, defaultView.centerLng], defaultView.zoom);
 
-L.tileLayer(defaultView.layer.MapboxEmerald.tileLayer).addTo(map);
+L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.emerald/{z}/{x}/{y}@2x.png?access_token=mapbox_access_token').addTo(map);
 
 var ReversablePlan = L.Routing.Plan.extend({
   createGeocoders: function() {
