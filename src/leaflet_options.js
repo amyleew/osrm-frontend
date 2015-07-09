@@ -6,29 +6,72 @@ module.exports = {
     centerLng: -77.0269,
     zoom: 13,
     waypoints: [],
-    language: 'en'
+    language: 'en',
+    layer: 'http://api.tiles.mapbox.com/v4/mapbox.emerald/{z}/{x}/{y}@2x.png?access_token='+ window.localStorage.getItem('mapbox_access_token')
   },
 
   services: [
-   {
+    {
       label: 'Car (fastest)',
       path: '//router.project-osrm.org/viaroute'
-   }
+    }
   ],
 
   layer: [
-   {
-     label: 'Mapbox Emerald',
-     tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.emerald/{z}/{x}/{y}@2x.png?access_token=mapbox_access_token',
-     attribution: '<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
-     maxZoom: 18
-   },
-   {
-     label: 'Mapbox Streets',
-     tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}@2x.png?access_token=mapbox_access_token',
-     attribution: '<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
-     maxZoom: 18
-   }
+    {
+      label: 'Mapbox Emerald',
+      tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.emerald/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'),
+      attribution: '<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
+      maxZoom: 18
+    },
+    {
+      label: 'Mapbox Streets',
+      tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'),
+      attribution: '<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
+      maxZoom: 18
+    },
+    {
+      label: 'Mapbox Light',
+      tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'),
+      attribution:'<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
+      maxZoom: 18
+    },
+    {
+      label: 'Mapbox Dark',
+      tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'),
+      attribution: '<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
+      maxZoom: 18
+    },
+    {
+      label: 'Mapbox Outdoors',
+      tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'),
+      attribution:'<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
+      maxZoom: 18
+    },
+    {
+      label: 'Mapbox Satellite',
+      tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'),
+      attribution: '<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
+      maxZoom: 18
+    },
+    {
+      label: 'Mapbox Streets Satellite',
+      tileLayer: 'http://api.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'),
+      attribution:'<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
+      maxZoom: 18
+    },
+    {
+      label: 'osm.org',
+      tileLayer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution: '© <a href="http://www.openstreetmap.org/copyright/en">OpenStreetMap</a> contributors',
+      maxZoom: 18
+    },
+    {
+      label: 'osm.de',
+      tileLayer: 'http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
+      attribution: '© <a href="http://www.openstreetmap.org/copyright/en">OpenStreetMap</a> contributors',
+      maxZoom: 18
+    }
   ]
 
 };

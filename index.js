@@ -5,14 +5,21 @@ var Geocoder = require('leaflet-control-geocoder');
 require('leaflet-routing-machine');
 
 var options = require('./src/lrm_options');
-var mapLayer = options.layer;
 var mapView = require('./src/leaflet_options');
+var mapLayer = mapView.layer;
 
+/* .map is a method available to arrays */
 mapLayer = mapLayer.map(function(layer) {
   layer = L.tileLayer(layer.tileLayer, {id: layer.label});
+  // console.log(layer.label);
+  // console.log(layer.options.id);
+  // console.log(layer.tileLayer);
+  // console.log(layer._url);
+  // console.log(window.localStorage.getItem('mapbox_access_token'));
   return layer;
 });
 
+// console.log(mapLayer);
 
 var map = L.map('map', {
   center: [mapView.defaultView.centerLat, mapView.defaultView.centerLng], 
@@ -20,10 +27,26 @@ var map = L.map('map', {
   layers: mapLayer
 });
 
-
+/*  Overlay tileLayers */
+L.tileLayer(mapView.defaultView.layer + window.localStorage.getItem('mapbox_access_token'), {
+	attribution: 'Maps by <a href="https://www.mapbox.com/about/maps/">MapBox</a>. ' +
+		'Routes from <a href="http://project-osrm.org/">OSRM</a>, ' +
+		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
+}).addTo(map);
 
 
 L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.emerald/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token')).addTo(map);
+
+
+L.control.layers(mapLayer).addTo(map);
+
+
+mapLayer.forEach(function(layer) {
+  // console.log(layer.options.id);
+});
+
+
+
 
 var ReversablePlan = L.Routing.Plan.extend({
   createGeocoders: function() {
