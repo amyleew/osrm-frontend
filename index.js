@@ -7,46 +7,42 @@ require('leaflet-routing-machine');
 var options = require('./src/lrm_options');
 var mapView = require('./src/leaflet_options');
 var mapLayer = mapView.layer;
+var defaultLayer = 
 
 /* .map is a method available to arrays */
-mapLayer = mapLayer.map(function(layer) {
-  layer = L.tileLayer(layer.tileLayer, {id: layer.label});
-  // console.log(layer.label);
-  // console.log(layer.options.id);
-  // console.log(layer.tileLayer);
-  // console.log(layer._url);
-  // console.log(window.localStorage.getItem('mapbox_access_token'));
-  return layer;
+mapLayer = mapLayer.reduce(function(title, layer) {
+  title[layer.label] = L.tileLayer(layer.tileLayer, {id: layer.label});
+  return title;
 });
-
-// console.log(mapLayer);
 
 var map = L.map('map', {
   center: [mapView.defaultView.centerLat, mapView.defaultView.centerLng], 
-  zoom: mapView.defaultView.zoom,
-  layers: mapLayer
+  zoom: mapView.defaultView.zoom
 });
 
-/*  Overlay tileLayers */
-L.tileLayer(mapView.defaultView.layer + window.localStorage.getItem('mapbox_access_token'), {
+L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'), {
 	attribution: 'Maps by <a href="https://www.mapbox.com/about/maps/">MapBox</a>. ' +
 		'Routes from <a href="http://project-osrm.org/">OSRM</a>, ' +
 		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
 }).addTo(map);
 
-
-L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.emerald/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token')).addTo(map);
-
-
 L.control.layers(mapLayer).addTo(map);
 
+/*
 
-mapLayer.forEach(function(layer) {
-  // console.log(layer.options.id);
-});
+L.control.layers(
+  mapLayer,
+  postion: 'topright'
+).addTo(map);
 
+L.control(
+  .layers(mapLayer),
+  .postion('topright')
+).addTo(map);
 
+*/
 
+L.control.scale().addTo(map);
 
 var ReversablePlan = L.Routing.Plan.extend({
   createGeocoders: function() {
