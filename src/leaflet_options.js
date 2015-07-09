@@ -29,6 +29,6 @@ module.exports = {
      attribution: '<a href="https://www.mapbox.com/about/maps">© Mapbox</a> <a href="http://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="http://mapbox.com/map-feedback/">Improve this map</a>',
      maxZoom: 18
    }
-]
+  ]
 
 };
