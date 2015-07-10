@@ -16,7 +16,7 @@ module.exports = {
     containerClassName: 'dark pad2',
     alternativeClassName: 'osrm-instructions',
     stepClassName: 'osrm-step',
-    geocodersClassName: 'osrm-inputs',
+    geocodersClassName: 'osrm-directions-inputs',
     itineraryBuilder: 'osrm-steps'
   },
 
