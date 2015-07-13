@@ -37,6 +37,15 @@
   padding-right: 0px;
 }
 
+.leaflet-routing-container.dark {
+   z-index: 9;
+   background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.8);
+   top: 0px;
+   right: 0px;
+   bottom: 0px;
+   overflow: auto;
+   margin: 0px !important;
+}
 .leaflet-routing-geocoders div {
   padding: 4px 0px 4px 0px;
 }
@@ -107,7 +116,6 @@
   background: white;
   padding-bottom: 16px;
   margin-top: -16px;
-  padding-left: 8px;
   line-height: 1;
 }
 
@@ -137,7 +145,7 @@
 
 .osrm-directions-inputs input {
   font-size: 12px;
-  width: 75%;
+  width: 80%;
   border: 0;
   background-color: transparent;
   height: 30px;
@@ -146,6 +154,150 @@
   padding: 10px 10px 10px 20px;
 }
 
+.osrm-directions-route-summary {
+    display: none;
+}
+
+.osrm-directions-route-active .osrm-directions-route-summary {
+    display: block;
+}
+
+.osrm-directions-summary {
+	border-top: solid 1px;
+	padding-left: 20px;
+	padding-top: 20px;
+}
+
+/* icons */
+
+.osrm-directions-icon {
+    background-image: url('mapbox.directions.png');
+    -webkit-background-size: 280px 20px;
+    background-size: 280px 20px;
+    background-repeat: no-repeat;
+    margin: 0;
+    content: '';
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+}
+
+.osrm-directions-instructions .osrm-directions-icon {
+    position: absolute;
+    left: 10px;
+    top: 25px;
+    margin: auto;
+}
+
+.osrm-continue-icon         { background-position: 0 0; }
+.osrm-sharp-right-icon      { background-position: -20px 0; }
+.osrm-turn-right-icon       { background-position: -40px 0; }
+.osrm-bear-right-icon       { background-position: -60px 0; }
+.osrm-u-turn-icon           { background-position: -80px 0; }
+.osrm-sharp-left-icon       { background-position: -100px 0; }
+.osrm-turn-left-icon        { background-position: -120px 0; }
+.osrm-bear-left-icon        { background-position: -140px 0; }
+.osrm-depart-icon           { 
+	background-position: -160px -1; 
+	background-color: #87DE9F;
+}
+.osrm-enter-roundabout-icon { background-position: -180px 0; }
+.osrm-arrive-icon           { 
+	background-position: -200px 0; 
+	background-color: #DB5C0A;
+}
+.osrm-close-icon            { background-position: -220px 0; }
+.osrm-reverse-icon          { background-position: -240px 0; }
+.osrm-error-icon            { background-position: -260px 0; }
+
+.osrm-marker-drag-icon {
+    display: block;
+    background-color: #444;
+    border-radius: 50%;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.osrm-marker-drag-icon-step {
+    background-color: #3BB2D0;
+}
+
+.leaflet-osrm-tools-container
+{
+   cursor: pointer;
+   width: 161px;
+   height: 26px;
+}
+
+.osrm-directions-summary
+{
+  border-top: solid 1px;
+  padding-left: 20px;
+}
+
+/* Summary color change */
+.leaflet-routing-alt .osrm-directions-summary
+{
+  color: #ABCC9F;
+}
+
+.osrm-directions-summary h2
+{
+  font-size: 19px;
+  font-weight: bold;
+  line-height: 22px;
+  margin-right: 15px;
+}
+.osrm-directions-summary h3
+{
+  font-weight: normal;
+}
+
+.leaflet-routing-alt-minimized .osrm-directions-summary
+{
+  color: #DB5C0A;
+  padding-top: 10px;
+}
+
+.leaflet-routing-alt table,
+.leaflet-routing-alt table td { 
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 20px;
+  padding: 5px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  font-weight: 200;
+}
+
+.leaflet-routing-alt table td:hover {
+    color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.leaflet-routing-alt table tr:hover {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.leaflet-routing-icon {
+    background-image: url('/images/osrm.directions.icons.png');
+    -webkit-background-size: 280px 20px;
+    background-size: 280px 20px;
+    background-repeat: no-repeat;
+    margin: 0;
+    content: '';
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+}
+
+.mapbox-directions-inputs,
+.mapbox-directions-inputs * {
+    /* -webkit-box-sizing: border-box; */
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
 
 

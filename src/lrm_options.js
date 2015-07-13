@@ -12,7 +12,7 @@ module.exports = {
       {color: 'black', opacity: 0.35, weight: 9},
       {color: 'white', opacity: 0.8, weight: 7}
     ],
-    summaryTemplate: '<div class="osrm-summary"><h2>{name}</h2><h3>{distance}, {time}</h3></div>',
+    summaryTemplate: '<div class="osrm-directions-summary"><h2>{name}</h2><h3>{distance}, {time}</h3></div>',
     containerClassName: 'dark pad2',
     alternativeClassName: 'osrm-instructions',
     stepClassName: 'osrm-step',
