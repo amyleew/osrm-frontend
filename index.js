@@ -49,20 +49,20 @@ var ReversablePlan = L.Routing.Plan.extend({
 });
 
 var plan = new ReversablePlan([], {
-  geocoder: Geocoder.nominatim(),
-  routeWhileDragging: true,
-  position: 'topright',
-  useZoomParameter: true,
-  reverseWaypoints: true,
-  dragStyles: options.lrm.dragStyles,
+	geocoder: Geocoder.nominatim(),
+	routeWhileDragging: true,
+	position: 'topright',
+	useZoomParameter: true,
+	reverseWaypoints: true,
+	dragStyles: options.lrm.dragStyles,
     geocodersClassName: options.lrm.geocodersClassName
   }),
   control = L.Routing.control({
-      routeWhileDragging: true,
-      plan: plan,
-      lineOptions: options.lrm.lineOptions,
-  summaryTemplate: options.lrm.summaryTemplate,
-  containerClassName: options.lrm.containerClassName,
+	routeWhileDragging: true,
+    plan: plan,
+    lineOptions: options.lrm.lineOptions,
+	summaryTemplate: options.lrm.summaryTemplate,
+	containerClassName: options.lrm.containerClassName,
     alternativeClassName: options.lrm.alternativeClassName,
     stepClassName: options.lrm.stepClassName
 }).addTo(map);

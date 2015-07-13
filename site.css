@@ -280,7 +280,7 @@
 }
 
 .leaflet-routing-icon {
-    background-image: url('/images/osrm.directions.icons.png');
+    background-image: url('images/osrm.directions.icons.png');
     -webkit-background-size: 280px 20px;
     background-size: 280px 20px;
     background-repeat: no-repeat;
