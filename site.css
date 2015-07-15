@@ -167,8 +167,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
   transition: background-color 0.2s ease;
 }
 
-.leaflet-routing-alternatives-container`
-
+.leaflet-routing-alternatives-container,
 .osrm-directions-inputs {
   position: fixed;
   left: 10px;
