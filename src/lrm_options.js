@@ -14,10 +14,10 @@ module.exports = {
     ],
     summaryTemplate: '<div class="osrm-directions-summary"><h2>{name}</h2><h3>{distance}, {time}</h3></div>',
     containerClassName: 'dark pad2',
-    alternativeClassName: 'osrm-instructions',
-    stepClassName: 'osrm-step',
+    alternativeClassName: 'osrm-directions-instructions',
+    stepClassName: 'osrm-directions-step',
     geocodersClassName: 'osrm-directions-inputs',
-    itineraryBuilder: 'osrm-steps'
+    itineraryBuilder: 'osrm-directions-steps'
   },
 
   popup: {

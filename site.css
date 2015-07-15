@@ -1,3 +1,37 @@
+/* Basics */
+
+.osrm-directions-inputs,
+.osrm-directions-errors,
+.osrm-directions-routes,
+.osrm-directions-instructions {
+    font:15px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+.osrm-directions-summary {
+	border-top: solid 1px;
+	padding-left: 20px;
+	padding-top: 20px;
+}
+
+.osrm-directions-inputs,
+.osrm-directions-inputs *,
+.osrm-directions-errors,
+.osrm-directions-errors *,
+.osrm-directions-routes,
+.osrm-directions-routes *,
+.osrm-directions-instructions,
+.osrm-directions-instructions * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+/* Notes - UIs and client-side stuff and instructions (someone working on @Will said)
+while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processing...
+
+*/
+
 .map {
     background: #eee;
     position: absolute;
@@ -38,12 +72,11 @@
 }
 
 .leaflet-routing-container.dark {
-   z-index: 9;
+   z-index: 10;
    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.8);
    top: 0px;
    right: 0px;
    bottom: 0px;
-   overflow: auto;
    margin: 0px !important;
 }
 .leaflet-routing-geocoders div {
@@ -53,7 +86,8 @@
 .leaflet-routing-geocoder {
   position: relative;
   background-color: white;
-  margin: 0px;
+  margin: 0 0 0 0;
+  border-bottom: 0px solid #000;
 }
 
 .leaflet-container button {
@@ -116,6 +150,7 @@
   background: white;
   padding-bottom: 16px;
   margin-top: -16px;
+  margin-left: -10px;
   line-height: 1;
 }
 
@@ -132,24 +167,23 @@
   transition: background-color 0.2s ease;
 }
 
+.leaflet-routing-alternatives-container`
 
 .osrm-directions-inputs {
   position: fixed;
   left: 10px;
   top: 10px;
   width: 45%;
-  max-width: 400px;
-  min-width: 300px;
+  max-width: 350px;
+  min-width: 200px;
 }
 
-
 .osrm-directions-inputs input {
-  font-size: 12px;
-  width: 80%;
+  font-size: 11px;
+  width: 90%;
   border: 0;
   background-color: transparent;
   height: 30px;
-  margin: 0;
   color: rgba(0,0,0,.5);
   padding: 10px 10px 10px 20px;
 }
@@ -162,11 +196,6 @@
     display: block;
 }
 
-.osrm-directions-summary {
-	border-top: solid 1px;
-	padding-left: 20px;
-	padding-top: 20px;
-}
 
 /* icons */
 
@@ -235,6 +264,52 @@
   padding-left: 20px;
 }
 
+/* Instructions */
+
+.osrm-directions-steps {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.osrm-directions-step {
+    position: relative;
+    color: rgba(255,255,255,.75);
+    cursor: pointer;
+    padding: 20px 20px 20px 40px;
+    font-size: 20px;
+    line-height: 25px;
+}
+
+.osrm-directions-step-distance {
+    color: rgba(255,255,255,.5);
+    position: absolute;
+    padding: 5px 10px;
+    font-size: 12px;
+    left: 30px;
+    bottom: -15px;
+}
+
+.osrm-directions-step:hover {
+    color: white;
+}
+
+.osrm-directions-step:after {
+    content: "";
+    position: absolute;
+    top: 50px;
+    bottom: -20px;
+    border-left: 2px dotted rgba(255,255,255,.2);
+    left: 20px;
+}
+
+.osrm-directions-step:last-child:after,
+.osrm-directions-step:last-child .osrm-directions-step-distance {
+    display: none;
+}
+
+
 /* Summary color change */
 .leaflet-routing-alt .osrm-directions-summary
 {
@@ -292,12 +367,7 @@
     height: 20px;
 }
 
-.mapbox-directions-inputs,
-.mapbox-directions-inputs * {
-    /* -webkit-box-sizing: border-box; */
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
+
 
 
 
