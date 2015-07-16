@@ -1,5 +1,7 @@
 'use strict';
 
+var mapView = require('./leaflet_options');
+
 module.exports = {
   lrm: {
     lineOptions: {
@@ -35,6 +37,7 @@ module.exports = {
     josmButtonClass: 'osrm-icon mapbox-josm-icon',
     localizationButtonClass: 'osrm-icon mapbox-flag-icon',
     printButtonClass: 'icon printer',
-    toolsContainerClass: 'fill-dark dark'
+    toolsContainerClass: 'fill-dark dark',
+	language: mapView.defaultView.language
   }
 };

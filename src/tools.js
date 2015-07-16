@@ -48,6 +48,7 @@ var Control = L.Control.extend({
     linkContainer = L.DomUtil.create('div', 'leaflet-osrm-tools-link', this._container);
     linkButton = L.DomUtil.create('span', this.options.linkButtonClass, linkContainer);
     linkButton.title = localization[this.options.language]['Link'];
+    
     L.DomEvent.on(linkButton, 'click', this._showLink, this);
 
     editorContainer = L.DomUtil.create('div', 'leaflet-osrm-tools-editor', this._container);

@@ -9,6 +9,7 @@ var mapView = require('./src/leaflet_options');
 var tools = require('./src/tools');
 var mapLayer = mapView.layer;
 
+// console.log(mapView.defaultView.language);
 
 var parsedOptions = links.parse(window.location.search);
 var viewOptions = L.extend(mapView.viewDefaults, parsedOptions);
@@ -42,8 +43,8 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{
 
 var lrm = L.Routing.control(L.extend({
   language: mapView.language,
-  units: mapView.units
-  // serviceUrl: options.services[mapView.services[0].path]
+  units: mapView.units,
+  serviceUrl: mapView.services[0].path
 },
   L.extend(
     options.lrm)
