@@ -5,6 +5,7 @@
 .osrm-directions-routes,
 .osrm-directions-instructions {
     font:15px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	margin-bottom: 30px;
 }
 
 .osrm-directions-summary {
@@ -174,6 +175,8 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
   width: 45%;
   max-width: 300px;
   min-width: 200px;
+  height: 100%;
+  overflow: scroll;
 }
 
 
@@ -377,6 +380,18 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
     height: 20px;
 }
 
+.leaflet-routing-icon-continue         { background-position: 0 0; }
+.leaflet-routing-icon-sharp-right      { background-position: -20px 0; }
+.leaflet-routing-icon-turn-right       { background-position: -50px 0; }
+.leaflet-routing-icon-bear-right       { background-position: -70px 0; }
+.leaflet-routing-icon-u-turn           { background-position: -97px 0; }
+.leaflet-routing-icon-sharp-left       { background-position: -120px 0; }
+.leaflet-routing-icon-turn-left        { background-position: -140px 0; }
+.leaflet-routing-icon-bear-left        { background-position: -168px 0; }
+.leaflet-routing-icon-depart           { background-position: -188px 0; }
+.leaflet-routing-icon-enter-roundabout { background-position: -210px 0; }
+.leaflet-routing-icon-arrive           { background-position: -237px 0; }
+.leaflet-routing-icon-via              { background-position: -260px 0; }
 
 
 
