@@ -4,8 +4,14 @@
 var Geocoder = require('leaflet-control-geocoder');
 require('leaflet-routing-machine');
 var options = require('./src/lrm_options');
+var links = require('./src/links.js');
 var mapView = require('./src/leaflet_options');
+var tools = require('./src/tools');
 var mapLayer = mapView.layer;
+
+
+var parsedOptions = links.parse(window.location.search);
+var viewOptions = L.extend(mapView.viewDefaults, parsedOptions);
 
 /* .reduce is a method available to arrays: 
    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce */
@@ -34,11 +40,32 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{
 
 /* Leaflet Controls */
 
+var lrm = L.Routing.control(L.extend({
+  language: mapView.language,
+  units: mapView.units
+  // serviceUrl: options.services[mapView.services[0].path]
+},
+  L.extend(
+    options.lrm)
+  )).addTo(map);
+
+// We need to do this the ugly way because of cyclic dependencies...
+// lrm.getPlan().options.createMarker = markerFactory(lrm, options.popup);
+
+tools.control(lrm, L.extend({
+  position: 'bottomleft',
+  language: mapView.language
+ },
+options.tools)).addTo(map);
+
 L.control.layers(mapLayer,{}, {
     position: 'bottomleft'
   }).addTo(map);
 
 L.control.scale().addTo(map);
+
+
+/* OSRM setup */
 
 
 var ReversablePlan = L.Routing.Plan.extend({

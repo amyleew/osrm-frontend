@@ -53,14 +53,20 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 
 /* Scale position */
 
-.leaflet-left .leaflet-control-scale {
-	margin-left: 10px;
+.leaflet-control-scale {
+  position: absolute;
+  left: 180px;
+  bottom: 5px;
 }
 
-.leaflet-bottom .leaflet-control-scale {
-	margin-bottom: -50px;
-}
+/* Toolbar */
 
+.leaflet-osrm-tools-container
+{
+   cursor: pointer;
+   width: 161px;
+   height: 26px;
+}
 
 /* Geocode container */
 
