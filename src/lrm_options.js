@@ -38,6 +38,6 @@ module.exports = {
     localizationButtonClass: 'osrm-icon mapbox-flag-icon',
     printButtonClass: 'icon printer',
     toolsContainerClass: 'fill-dark dark',
-	language: mapView.defaultView.language
+    language: mapView.defaultView.language
   }
 };
