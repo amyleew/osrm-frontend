@@ -44,12 +44,15 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
     left: 0;
 }
 
-/* L.control-layers position */
+/* tool colors and divs */
 
-.leaflet-left .leaflet-control-layers {
-	margin-left: 100px;
+.fill-dark {
+  background-color: #404040;
 }
 
+.dark {
+  color: #fff;
+}
 
 /* Scale position */
 
@@ -185,6 +188,188 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
   overflow: scroll;
 }
 
+/* OSRM + Leaflet toolbar icons */
+
+.leaflet-bar {
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  border-radius: 4px;
+}
+
+.osrm-directions-icon {
+    background-image: url('images/osrm.toolbar.icons.png');
+    -webkit-background-size: 120px 20px;
+    /* background-size: 280px 20px; 
+    background-repeat: no-repeat; */
+    margin: 0;
+    content: '';
+    display: inline-block;
+    vertical-align: top;
+    width: 26px;
+    height: 20px;
+}
+
+.osrm-add-icon  { background-position: -280px 0; }
+.osrm-via-icon  { background-position: -300px 0; }
+
+.osrm-link-icon  { background-position: 0px 0; }
+.osrm-editor-icon  { background-position: -24px 0; }
+.osrm-josm-icon  { background-position: -46px 0; }
+.osrm-flag-icon  { background-position: -71px 0; }
+.osrm-printer-icon  { background-position: -96px 0; }
+
+.osrm-close-light-icon  { background-position: -101px 0; }
+
+.leaflet-osrm-tools-link
+{
+  position: absolute;
+  top: 3px;
+  left: 3px;
+}
+.leaflet-osrm-tools-link:hover
+{
+   background-color: rgba(255, 255, 255, 0.2);
+}
+.leaflet-osrm-tools-editor
+{
+  position: absolute;
+  top: 3px;
+  left: 28px;
+}
+.leaflet-osrm-tools-editor:hover
+{
+   background-color: rgba(255, 255, 255, 0.2);
+}
+.leaflet-osrm-tools-josm
+{
+  position: absolute;
+  top: 3px;
+  left: 53px;
+}
+.leaflet-osrm-tools-josm:hover
+{
+   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.leaflet-osrm-tools-localization-popup
+{
+  width: 90%;
+}
+
+.leaflet-osrm-tools-language-list
+{
+  float: left;
+  width: 50%;
+}
+.leaflet-osrm-tools-units-list
+{
+  float: right;
+  width: 50%;
+}
+
+.leaflet-osrm-tools-localization-popup a
+{
+    width: 100%;
+    height: auto;
+    color: #fff;
+    background-color: inherit;
+}
+
+.leaflet-osrm-tools-localization-popup a:hover
+{
+    width: 100%;
+    height: auto;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.leaflet-osrm-tools-localization
+{
+  position: absolute;
+  top: 3px;
+  left: 78px;
+}
+
+
+.leaflet-osrm-tools-localization:hover
+{
+   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.leaflet-osrm-tools-print
+{
+  position: absolute;
+  top: 3px;
+  left: 103px;
+}
+.leaflet-osrm-tools-print:hover
+{
+   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.leaflet-osrm-tools-gpx
+{
+  position: absolute;
+  top: 3px;
+  left: 128px;
+  text-align: center;
+}
+.leaflet-osrm-tools-gpx a {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0);
+  width: 30px;
+  height: 20px;
+}
+.leaflet-osrm-tools-gpx a:hover
+{
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 30px;
+  height: 20px;
+}
+
+.leaflet-osrm-tools-popup
+{
+   border: 1px solid rgba(0,0,0,0.1);
+   position: absolute;
+   min-width: 440px;
+   min-height: 60px;
+   padding: 10px;
+}
+
+.leaflet-osrm-tools-popup-close
+{
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+
+.leaflet-osrm-tools-popup-close:hover {
+    opacity: .3;
+}
+
+.leaflet-osrm-tools-popup input
+{
+  position: absolute;
+  min-width: 300px;
+  min-height: 40px;
+  border: 0px solid;
+  margin-top: 0px;
+  margin-left: 85px;
+  padding: 5px;
+}
+
+.leaflet-osrm-tools-popup label
+{
+  position: absolute;
+  margin-top: 0px;
+  margin-left: 0px;
+}
+
+.leaflet-osrm-tools-popup-hide
+{
+  display: none;
+}
+
 
 /* OSRM geocoder directions inputs */
 
@@ -216,20 +401,8 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 }
 
 
-/* icons */
+/* directions icons */
 
-.osrm-directions-icon {
-    background-image: url('mapbox.directions.png');
-    -webkit-background-size: 280px 20px;
-    background-size: 280px 20px;
-    background-repeat: no-repeat;
-    margin: 0;
-    content: '';
-    display: inline-block;
-    vertical-align: top;
-    width: 20px;
-    height: 20px;
-}
 
 .osrm-directions-instructions .osrm-directions-icon {
     position: absolute;

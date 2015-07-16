@@ -23,20 +23,20 @@ module.exports = {
   },
 
   popup: {
-    removeButtonClass: 'osrm-icon mapbox-close-light-icon',
-    uturnButtonClass: 'osrm-icon mapbox-u-turn-icon',
+    removeButtonClass: 'osrm-directions-icon osrm-close-light-icon',
+    uturnButtonClass: 'osrm-directions-icon osrm-u-turn-icon',
     markerOptions: {
     }
   },
 
   tools: {
     popupWindowClass: 'fill-dark dark',
-    popupCloseButtonClass: 'osrm-icon mapbox-close-icon',
-    linkButtonClass: 'osrm-icon mapbox-link-icon',
-    editorButtonClass: 'osrm-icon mapbox-editor-icon',
-    josmButtonClass: 'osrm-icon mapbox-josm-icon',
-    localizationButtonClass: 'osrm-icon mapbox-flag-icon',
-    printButtonClass: 'icon printer',
+    popupCloseButtonClass: 'osrm-directions-icon osrm-close-icon',
+    linkButtonClass: 'osrm-directions-icon osrm-link-icon',
+    editorButtonClass: 'osrm-directions-icon osrm-editor-icon',
+    josmButtonClass: 'osrm-directions-icon osrm-josm-icon',
+    localizationButtonClass: 'osrm-directions-icon osrm-flag-icon',
+    printButtonClass: 'osrm-directions-icon osrm-printer-icon',
     toolsContainerClass: 'fill-dark dark',
     language: mapView.defaultView.language
   }
