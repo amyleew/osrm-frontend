@@ -9,12 +9,12 @@ function _formatCoord(latLng)
   if (!latLng) {
    return
 }
-  console.log(latLng);
+  // console.log(latLng);
   // read the var ^
-  //console.log(typeof latLng.lat.toFixed(precision));
-
+  // console.log(typeof latLng.lat.toFixed(precision));
   // console.log(latLng.lat.toFixed(precision));
   // check what type of value it is ^
+
   return latLng.lat.toFixed(precision) + "," + latLng.lng.toFixed(precision);
 
 }
@@ -25,8 +25,6 @@ function _formatCoord(latLng)
 
 function _parseCoord(coordStr)
 {
-console.log(coordStr);
-
   var latLng = coordStr.split(','),
       lat = parseFloat(latLng[0]),
       lon = parseFloat(latLng[1]);
@@ -41,10 +39,7 @@ console.log(coordStr);
 
 // console.log(_parseCoord.coordStr);
 // console.log(coordStr);
-
 // console.log(_parseCoord({lat: 32.333, lng: 14.12}));
-
-
 
 function _parseInteger(intStr)
 {

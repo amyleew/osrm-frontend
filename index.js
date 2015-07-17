@@ -10,7 +10,7 @@ var tools = require('./src/tools');
 var mapLayer = mapView.layer;
 
 var parsedOptions = links.parse(window.location.search);
-var viewOptions = L.extend(mapView.viewDefaults, parsedOptions);
+//var viewOptions = L.extend(mapView.viewDefaults, parsedOptions);
 
 /* .reduce is a method available to arrays:
    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce */
@@ -28,11 +28,6 @@ var map = L.map('map', {
   zoomControl: false
 });
 
-map.on('link', function(data) {
-  var link = data.link;
-  console.log(link);
-  // window.location.href = link;
-});
 
 /* Tile default layer */
 
@@ -107,8 +102,21 @@ map.on('click', function(e) {
     control.spliceWaypoints(0, 1, e.latlng);
   } else if (end) {
     control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
-    var getLink = links.format(window.location.href, tools.getLinkOptions());
+
+    // var getLink = links.format(window.location.href, link.getLinkOptions());
+    // console.log(getLink);
   }
 });
+
+map.on('link', function(data) {
+  var link = data.link;
+  console.log(link);
+
+});
+
+
+
+
+
 
 
