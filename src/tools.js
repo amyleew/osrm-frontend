@@ -126,8 +126,11 @@ var Control = L.Control.extend({
         linkShortenerLabel;
 
     link = links.format(window.location.href, this._getLinkOptions());
+
+    // console.log(link);
+
     shortener = links.shortener();
-    //window.location.href = link;
+    // window.location.href = link;  <= this was the error
 
     linkContainer = L.DomUtil.create('div', 'dark checkbox-pill');
     linkInput = L.DomUtil.create('input', '', linkContainer);
@@ -249,5 +252,5 @@ var Control = L.Control.extend({
 module.exports = {
   control: function(lrm, options) {
     return new Control(lrm, options);
-  },
+  }
 };

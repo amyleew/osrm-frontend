@@ -6,21 +6,45 @@ var url = require('url'),
 function _formatCoord(latLng)
 {
   var precision = 6;
-  return latLng.lat.toFixed(precision) + "," + latLng.lng.toFixed(precision);
+  if (!latLng) {
+   return
 }
+  console.log(latLng);
+  // read the var ^
+  //console.log(typeof latLng.lat.toFixed(precision));
+
+  // console.log(latLng.lat.toFixed(precision));
+  // check what type of value it is ^
+  return latLng.lat.toFixed(precision) + "," + latLng.lng.toFixed(precision);
+
+}
+
+// console.log(_formatCoord({lat: 32.333, lng: 14.12}));
+  // pass value to return
+
 
 function _parseCoord(coordStr)
 {
+console.log(coordStr);
+
   var latLng = coordStr.split(','),
       lat = parseFloat(latLng[0]),
       lon = parseFloat(latLng[1]);
 
+// console.log(latLng)
   if (isNaN(lat) || isNaN(lon)) {
     throw {name: 'InvalidCoords', message: "\"" + coordStr + "\" is not a valid coordinate."};
   }
 
   return L.latLng(lat,lon);
 }
+
+// console.log(_parseCoord.coordStr);
+// console.log(coordStr);
+
+// console.log(_parseCoord({lat: 32.333, lng: 14.12}));
+
+
 
 function _parseInteger(intStr)
 {

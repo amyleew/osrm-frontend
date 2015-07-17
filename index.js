@@ -9,8 +9,6 @@ var mapView = require('./src/leaflet_options');
 var tools = require('./src/tools');
 var mapLayer = mapView.layer;
 
-// console.log(mapView.defaultView.language);
-
 var parsedOptions = links.parse(window.location.search);
 var viewOptions = L.extend(mapView.viewDefaults, parsedOptions);
 
@@ -29,6 +27,7 @@ var map = L.map('map', {
   zoom: mapView.defaultView.zoom,
   zoomControl: false
 });
+
 
 /* Tile default layer */
 
@@ -105,5 +104,13 @@ map.on('click', function(e) {
     control.spliceWaypoints(0, 1, e.latlng);
   } else if (end) {
     control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
+	// console.log(end);
+	
+	console.log(control);
+
+    //link = links.format(window.location.href, tools.getLinkOptions());
+    //console.log(link);
   }
 });
+
+
