@@ -12,7 +12,7 @@ var mapLayer = mapView.layer;
 var parsedOptions = links.parse(window.location.search);
 var viewOptions = L.extend(mapView.viewDefaults, parsedOptions);
 
-/* .reduce is a method available to arrays: 
+/* .reduce is a method available to arrays:
    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce */
 mapLayer = mapLayer.reduce(function(title, layer) {
   /* pass vars in format for leaflet consumption */
@@ -23,11 +23,16 @@ mapLayer = mapLayer.reduce(function(title, layer) {
 /* Add the map class */
 
 var map = L.map('map', {
-  center: [mapView.defaultView.centerLat, mapView.defaultView.centerLng], 
+  center: [mapView.defaultView.centerLat, mapView.defaultView.centerLng],
   zoom: mapView.defaultView.zoom,
   zoomControl: false
 });
 
+map.on('link', function(data) {
+  var link = data.link;
+  console.log(link);
+  // window.location.href = link;
+});
 
 /* Tile default layer */
 
@@ -66,8 +71,6 @@ L.control.scale().addTo(map);
 
 
 /* OSRM setup */
-
-
 var ReversablePlan = L.Routing.Plan.extend({
   createGeocoders: function() {
     var container = L.Routing.Plan.prototype.createGeocoders.call(this);
@@ -104,12 +107,7 @@ map.on('click', function(e) {
     control.spliceWaypoints(0, 1, e.latlng);
   } else if (end) {
     control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
-	// console.log(end);
-	
-	console.log(control);
-
-    //link = links.format(window.location.href, tools.getLinkOptions());
-    //console.log(link);
+    var getLink = links.format(window.location.href, tools.getLinkOptions());
   }
 });
 

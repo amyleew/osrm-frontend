@@ -126,8 +126,7 @@ var Control = L.Control.extend({
         linkShortenerLabel;
 
     link = links.format(window.location.href, this._getLinkOptions());
-
-    // console.log(link);
+    this._map.fire('link', { link: link });
 
     shortener = links.shortener();
     // window.location.href = link;  <= this was the error
