@@ -52,7 +52,7 @@ var lrm = L.Routing.control(L.extend({
 // We need to do this the ugly way because of cyclic dependencies...
 // lrm.getPlan().options.createMarker = markerFactory(lrm, options.popup);
 
-tools.control(lrm, L.extend({
+var toolsControl = tools.control(lrm, L.extend({
   position: 'bottomleft',
   language: mapView.language
  },
@@ -102,9 +102,7 @@ map.on('click', function(e) {
     control.spliceWaypoints(0, 1, e.latlng);
   } else if (end) {
     control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
-
-    // var getLink = links.format(window.location.href, link.getLinkOptions());
-    // console.log(getLink);
+    var getLink = links.format(window.location.href, toolsControl._getLinkOptions());
   }
 });
 
@@ -113,10 +111,3 @@ map.on('link', function(data) {
   console.log(link);
 
 });
-
-
-
-
-
-
-
