@@ -96,8 +96,6 @@ var plan = new ReversablePlan([], {
 var start = true;
 var end = false;
 
-
-
 map.on('click', function(e) {
   if (start) {
     end = true;
@@ -108,19 +106,15 @@ map.on('click', function(e) {
 
     //console.log("waypoint1: "+JSON.stringify(plan._waypoints));
 	var updatedWaypoints = plan._waypoints;
-
 	console.log(updatedWaypoints);
 
 	var linkOptions = toolsControl._getLinkOptions();
-
 	console.log(linkOptions.waypoints);
 
 	linkOptions.waypoints = updatedWaypoints;
-
     var getLink = links.format(window.location.href, linkOptions);
 
 	console.log(getLink);
-
 	//console.log(toolsControl._getLinkOptions());
 
 
