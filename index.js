@@ -23,8 +23,9 @@ mapLayer = mapLayer.reduce(function(title, layer) {
 /* Add the map class */
 
 var map = L.map('map', {
-  center: [mapView.defaultView.centerLat, mapView.defaultView.centerLng],
-  zoom: mapView.defaultView.zoom,
+  // updates with parsed new searches instead of mapView.defaultView
+  center: [viewOptions.centerLat, viewOptions.centerLng],
+  zoom: viewOptions.zoom,
   zoomControl: false
 });
 
@@ -41,8 +42,8 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{
 /* Leaflet Controls */
 
 var lrm = L.Routing.control(L.extend({
-  language: mapView.language,
-  units: mapView.units,
+  language: viewOptions.language,
+  units: viewOptions.units,
   serviceUrl: mapView.services[0].path
 },
   L.extend(
@@ -106,10 +107,10 @@ map.on('click', function(e) {
 
     //console.log("waypoint1: "+JSON.stringify(plan._waypoints));
 	var updatedWaypoints = plan._waypoints;
-	console.log(updatedWaypoints);
+	// console.log(updatedWaypoints);
 
 	var linkOptions = toolsControl._getLinkOptions();
-	console.log(linkOptions.waypoints);
+	// console.log(linkOptions.waypoints);
 
 	linkOptions.waypoints = updatedWaypoints;
     var getLink = links.format(window.location.href, linkOptions);

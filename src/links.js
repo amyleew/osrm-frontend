@@ -87,10 +87,10 @@ function parseLink(link)
   try {
     parsedValues.zoom      = q.zoom   && _parseInteger(q.zoom);
     parsedValues.center    = q.center && _parseCoord(q.center);
-	console.log(q.loc);
+	// console.log(q.loc);
     parsedValues.waypoints = q.loc    && q.loc.map(_parseCoord).map(
       function (coord) {
-        console.log(coord);
+        // console.log(coord);
         return L.Routing.waypoint(coord);
       }
     );
