@@ -84,7 +84,7 @@ function parseLink(link)
       parsedValues = {},
       options = {},
       k;
-
+  console.log(url.parse(link));
   try {
     parsedValues.zoom      = q.zoom   && _parseInteger(q.zoom);
     parsedValues.center    = q.center && _parseCoord(q.center);

@@ -95,6 +95,22 @@ var start = true;
 var end = false;
 
 map.on('click', function(e) {
+  console.log('mapclick');
+  if(control.getWaypoints().length < 2) {
+    mapChange(e);
+  }
+});
+
+
+plan.on('waypointschanged',function(e) {
+  console.log('plan');
+  if(control.getWaypoints().length >= 2) {
+    mapChange(e);
+  }
+});
+
+
+function mapChange(e) {
   if (start) {
     end = true;
     start = false;
@@ -108,9 +124,14 @@ map.on('click', function(e) {
 
     // generate the link
     var getLink = links.format(window.location.href, linkOptions);
-    console.log(getLink);
+	var hashLink = getLink.split('?');
+    console.log(hashLink);
 
     // we will them modify the url
-	window.location.href = getLink;
+	window.location.hash = hashLink[1];
   }
-});
+}
+
+
+
+
