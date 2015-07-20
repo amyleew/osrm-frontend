@@ -100,7 +100,7 @@ if (viewOptions.waypoints.length > 1) {
   control.spliceWaypoints(control.getWaypoints().length - 1, 1, viewOptions.waypoints[1].latLng);
 }
 
-console.log(viewOptions);
+//console.log(viewOptions);
 
 var start = true;
 var end = false;
@@ -122,6 +122,7 @@ map.on('click', function(e) {
     console.log(getLink);
 
     // we will them modify the url
+	window.location.href = getLink;
   }
 });
 
