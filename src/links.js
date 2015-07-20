@@ -73,6 +73,7 @@ function formatLink(baseURL, options)
           srv: options.service,
         },
       });
+	// no layer, no service
   return formated;
 }
 

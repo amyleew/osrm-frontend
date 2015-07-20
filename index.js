@@ -24,10 +24,10 @@ mapLayer = mapLayer.reduce(function(title, layer) {
 
 var map = L.map('map', {
   // updates with parsed new searches instead of mapView.defaultView
-  center: [viewOptions.centerLat, viewOptions.centerLng],
-  zoom: viewOptions.zoom,
+  // center: [viewOptions.centerLat, viewOptions.centerLng],
+  // zoom: viewOptions.zoom,
   zoomControl: false
-});
+}).setView(viewOptions.center, viewOptions.zoom);
 
 
 /* Tile default layer */
@@ -110,20 +110,22 @@ map.on('click', function(e) {
 	// console.log(updatedWaypoints);
 
 	var linkOptions = toolsControl._getLinkOptions();
-	// console.log(linkOptions.waypoints);
+	//console.log(linkOptions);
 
 	linkOptions.waypoints = updatedWaypoints;
     var getLink = links.format(window.location.href, linkOptions);
-
-	console.log(getLink);
-	//console.log(toolsControl._getLinkOptions());
-
+    console.log(getLink);
+	
+	//getLink = window.location.hash;
+	//var hash2 = 
+	// window.location.href = getLink;
+	// window.history.pushState(getLink);
+    // window.location.replace(getLink);
+	// console.log(window.location.query);
+	// console.log(toolsControl._getLinkOptions());
 
   }
 });
 
-map.on('link', function(data) {
-  var link = data.link;
-  console.log(link);
 
-});
+
