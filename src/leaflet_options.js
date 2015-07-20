@@ -4,7 +4,7 @@ module.exports = {
   defaultView: {
     centerLat: 38.8995,
     centerLng: -77.0269,
-	center: L.latLng(38.8995,-77.0269),
+    center: L.latLng(38.8995,-77.0269),
     zoom: 13,
     waypoints: [],
     language: 'en',

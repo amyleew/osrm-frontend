@@ -28,13 +28,8 @@ mapLayer = mapLayer.reduce(function(title, layer) {
 
 var map = L.map('map', {
   // updates with parsed new searches instead of mapView.defaultView
-  // center: [viewOptions.centerLat, viewOptions.centerLng],
-  // zoom: viewOptions.zoom,
-  zoomControl: false,
-  //layers: mapView.layer
+  zoomControl: false
 }).setView(viewOptions.center, viewOptions.zoom);
-
-//console.log(options);
 
 /* Tile default layer */
 
@@ -43,8 +38,6 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{
 		'Routes from <a href="http://project-osrm.org/">OSRM</a>, ' +
 		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
 }).addTo(map);
-
-
 
 /* Leaflet Controls */
 
@@ -63,15 +56,13 @@ var lrm = L.Routing.control(L.extend({
 var toolsControl = tools.control(lrm, L.extend({
   position: 'bottomleft',
   language: mapView.language
- },
-options.tools)).addTo(map);
+ }, options.tools)).addTo(map);
 
 L.control.layers(mapLayer,{}, {
     position: 'bottomleft',
   }).addTo(map);
 
 L.control.scale().addTo(map);
-
 
 /* OSRM setup */
 var ReversablePlan = L.Routing.Plan.extend({
@@ -120,44 +111,14 @@ map.on('click', function(e) {
   } else if (end) {
     control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
 
-	// READ new waypoints, zoom, center with click updates
-	var updatedWaypoints = plan._waypoints;
-	var linkOptions = toolsControl._getLinkOptions();
-	linkOptions.waypoints = updatedWaypoints;
-	// console.log("updates: "+JSON.stringify(linkOptions));
-	var updatedCenter = linkOptions.center;
-	var updatedZoom = linkOptions.zoom;
+    var updatedWaypoints = plan._waypoints;
+    var linkOptions = toolsControl._getLinkOptions();
+    linkOptions.waypoints = updatedWaypoints;
 
-	// default map options
-	//console.log("default: "+JSON.stringify(linkOptions));
+    console.log(linkOptions);
 
-	// UPDATE new values
-	viewOptions.waypoints = updatedWaypoints;
-	viewOptions.center = updatedCenter;
-	viewOptions.zoom = updatedZoom;
-
-
-	// pass new URL to href bar ?
-    var getLink = links.format(window.location.href, viewOptions);
-	//what's the new URL ?
-	console.log(getLink);
-
-	// updated viewOptions with new waypoints
-	//console.log("NEW way: "+JSON.stringify(viewOptions.waypoints));
-	//console.log("NEW zoom: "+JSON.stringify(viewOptions.zoom));
-	//console.log("NEW center: "+JSON.stringify(viewOptions.center));
-
-    //console.log("active link: "+getLink);
-	//console.log("view options: "+JSON.stringify(viewOptions));
-
-	//getLink = window.location.hash;
-	//var hash2 = 
-	//window.location.href = getLink;
-	// window.history.pushState(getLink);
-    // window.location.replace(getLink);
-	// console.log(window.location.query);
-	// console.log(toolsControl._getLinkOptions());
-
+    var getLink = links.format(window.location.href, linkOptions);
+    console.log(getLink);
   }
 });
 
