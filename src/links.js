@@ -79,12 +79,14 @@ function formatLink(baseURL, options)
 
 function parseLink(link)
 {
+  link = '?' + link.slice(1);
+
   var parsed = url.parse(link, true),
       q = parsed.query,
       parsedValues = {},
       options = {},
       k;
-  console.log(url.parse(link));
+
   try {
     parsedValues.zoom      = q.zoom   && _parseInteger(q.zoom);
     parsedValues.center    = q.center && _parseCoord(q.center);

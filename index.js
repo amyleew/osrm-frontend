@@ -8,7 +8,7 @@ var mapView = require('./src/leaflet_options');
 var tools = require('./src/tools');
 var mapLayer = mapView.layer;
 
-var parsedOptions = links.parse(window.location.search);
+var parsedOptions = links.parse(window.location.hash);
 var viewOptions = L.extend(mapView.defaultView, parsedOptions);
 
 /* .reduce is a method available to arrays:
