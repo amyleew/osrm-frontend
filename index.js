@@ -10,7 +10,7 @@ var tools = require('./src/tools');
 var mapLayer = mapView.layer;
 
 var parsedOptions = links.parse(window.location.search);
-//var viewOptions = L.extend(mapView.viewDefaults, parsedOptions);
+var viewOptions = L.extend(mapView.defaultView, parsedOptions);
 
 /* .reduce is a method available to arrays:
    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce */
