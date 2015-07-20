@@ -92,8 +92,11 @@ var plan = new ReversablePlan([], {
     stepClassName: options.lrm.stepClassName
 }).addTo(map);
 
+
 var start = true;
 var end = false;
+
+
 
 map.on('click', function(e) {
   if (start) {
@@ -102,7 +105,25 @@ map.on('click', function(e) {
     control.spliceWaypoints(0, 1, e.latlng);
   } else if (end) {
     control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
-    var getLink = links.format(window.location.href, toolsControl._getLinkOptions());
+
+    //console.log("waypoint1: "+JSON.stringify(plan._waypoints));
+	var updatedWaypoints = plan._waypoints;
+
+	console.log(updatedWaypoints);
+
+	var linkOptions = toolsControl._getLinkOptions();
+
+	console.log(linkOptions.waypoints);
+
+	linkOptions.waypoints = updatedWaypoints;
+
+    var getLink = links.format(window.location.href, linkOptions);
+
+	console.log(getLink);
+
+	//console.log(toolsControl._getLinkOptions());
+
+
   }
 });
 
