@@ -1,6 +1,5 @@
 'use strict';
 
-
 var Geocoder = require('leaflet-control-geocoder');
 require('leaflet-routing-machine');
 var options = require('./src/lrm_options');
@@ -9,12 +8,8 @@ var mapView = require('./src/leaflet_options');
 var tools = require('./src/tools');
 var mapLayer = mapView.layer;
 
-//console.log(mapView.defaultView);
-
 var parsedOptions = links.parse(window.location.search);
 var viewOptions = L.extend(mapView.defaultView, parsedOptions);
-
-//console.log(mapView.layer);
 
 /* .reduce is a method available to arrays:
    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce */
@@ -25,14 +20,11 @@ mapLayer = mapLayer.reduce(function(title, layer) {
 });
 
 /* Add the map class */
-
 var map = L.map('map', {
-  // updates with parsed new searches instead of mapView.defaultView
   zoomControl: false
 }).setView(viewOptions.center, viewOptions.zoom);
 
 /* Tile default layer */
-
 L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'), {
 	attribution: 'Maps by <a href="https://www.mapbox.com/about/maps/">MapBox</a>. ' +
 		'Routes from <a href="http://project-osrm.org/">OSRM</a>, ' +
@@ -40,7 +32,6 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{
 }).addTo(map);
 
 /* Leaflet Controls */
-
 var lrm = L.Routing.control(L.extend({
   language: viewOptions.language,
   units: viewOptions.units,
@@ -100,8 +91,6 @@ if (viewOptions.waypoints.length > 1) {
   control.spliceWaypoints(control.getWaypoints().length - 1, 1, viewOptions.waypoints[1].latLng);
 }
 
-//console.log(viewOptions);
-
 var start = true;
 var end = false;
 
@@ -125,6 +114,3 @@ map.on('click', function(e) {
 	window.location.href = getLink;
   }
 });
-
-
-
