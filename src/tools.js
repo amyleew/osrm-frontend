@@ -138,7 +138,7 @@ var Control = L.Control.extend({
     linkShortener = L.DomUtil.create('input', 'dark stretch', linkContainer);
     linkShortener.type = 'checkbox';
     linkShortener.id = 'short';
-    linkShortenerLabel = L.DomUtil.create('label', 'button icon check', linkContainer);
+    linkShortenerLabel = L.DomUtil.create('label', '', linkContainer);
     linkShortenerLabel.setAttribute("for", "short");
     linkShortenerLabel.innerHTML = localization[this.options.language]['Short'];
 

@@ -349,7 +349,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 
 .leaflet-osrm-tools-popup input
 {
-  position: absolute;
+  /* position: absolute; */
   min-width: 300px;
   min-height: 40px;
   border: 0px solid;
