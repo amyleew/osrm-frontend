@@ -91,47 +91,35 @@ if (viewOptions.waypoints.length > 1) {
   control.spliceWaypoints(control.getWaypoints().length - 1, 1, viewOptions.waypoints[1].latLng);
 }
 
-var start = true;
-var end = false;
-
-map.on('click', function(e) {
-  console.log('mapclick');
-  if(control.getWaypoints().length < 2) {
-    mapChange(e);
-  }
-});
-
-
-plan.on('waypointschanged',function(e) {
-  console.log('plan');
-  if(control.getWaypoints().length >= 2) {
-    mapChange(e);
-  }
-});
-
+map.on('click', mapChange);
+plan.on('waypointschanged', updateHash);
 
 function mapChange(e) {
-  if (start) {
-    end = true;
-    start = false;
+  var length = control.getWaypoints().filter(function(pnt) {
+    return pnt.latLng;
+  });
+  
+  length = length.length;
+
+  if (!length) {
     control.spliceWaypoints(0, 1, e.latlng);
-  } else if (end) {
-    control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
-
-    var linkOptions = toolsControl._getLinkOptions();
-    // update waypoints with the new waypoints
-    linkOptions.waypoints = plan._waypoints;
-
-    // generate the link
-    var getLink = links.format(window.location.href, linkOptions);
-	var hashLink = getLink.split('?');
-    console.log(hashLink);
-
-    // we will them modify the url
-	window.location.hash = hashLink[1];
+  } else {
+    if (length === 1) length = length + 1;
+    control.spliceWaypoints(length - 1, 1, e.latlng);
+    updateHash();
   }
 }
 
+function updateHash() {
+  var length = control.getWaypoints().filter(function(pnt) {
+    return pnt.latLng;
+  }).length;
 
+  if (length < 2) return;
 
+  var linkOptions = toolsControl._getLinkOptions();
+  linkOptions.waypoints = plan._waypoints;
 
+  var hash = links.format(window.location.href, linkOptions).split('?');
+  window.location.hash = hash[1];
+}
