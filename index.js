@@ -94,10 +94,12 @@ var control = L.Routing.control({
 
 // set viewOptions waypoints to update with map clicked waypoints after control
 
-if (viewOptions.waypoints) {
+if (viewOptions.waypoints[0]) {
   control.spliceWaypoints(0, 1, viewOptions.waypoints[0].latLng);
   control.spliceWaypoints(control.getWaypoints().length - 1, 1, viewOptions.waypoints[1].latLng);
 }
+
+console.log(viewOptions);
 
 var start = true;
 var end = false;
