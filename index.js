@@ -94,16 +94,13 @@ var control = L.Routing.control({
 
 // set viewOptions waypoints to update with map clicked waypoints after control
 
-console.log(viewOptions);
-
-if (viewOptions._waypoints) {
-
+if (viewOptions.waypoints) {
+  control.spliceWaypoints(0, 1, viewOptions.waypoints[0].latLng);
+  control.spliceWaypoints(control.getWaypoints().length - 1, 1, viewOptions.waypoints[1].latLng);
 }
-
 
 var start = true;
 var end = false;
-
 
 map.on('click', function(e) {
   if (start) {
