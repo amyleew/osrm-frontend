@@ -73,30 +73,32 @@ var ReversablePlan = L.Routing.Plan.extend({
 });
 
 var plan = new ReversablePlan([], {
-	geocoder: Geocoder.nominatim(),
-	routeWhileDragging: true,
-	position: 'topright',
-	useZoomParameter: true,
-	reverseWaypoints: true,
-	dragStyles: options.lrm.dragStyles,
-    geocodersClassName: options.lrm.geocodersClassName
-  }),
-  control = L.Routing.control({
-	routeWhileDragging: true,
-    plan: plan,
-    lineOptions: options.lrm.lineOptions,
-	summaryTemplate: options.lrm.summaryTemplate,
-	containerClassName: options.lrm.containerClassName,
-    alternativeClassName: options.lrm.alternativeClassName,
-    stepClassName: options.lrm.stepClassName
+  geocoder: Geocoder.nominatim(),
+  routeWhileDragging: true,
+  position: 'topright',
+  useZoomParameter: true,
+  reverseWaypoints: true,
+  dragStyles: options.lrm.dragStyles,
+  geocodersClassName: options.lrm.geocodersClassName
+});
+
+var control = L.Routing.control({
+  routeWhileDragging: true,
+  plan: plan,
+  lineOptions: options.lrm.lineOptions,
+  summaryTemplate: options.lrm.summaryTemplate,
+  containerClassName: options.lrm.containerClassName,
+  alternativeClassName: options.lrm.alternativeClassName,
+  stepClassName: options.lrm.stepClassName
 }).addTo(map);
-
-
-// console.log(viewOptions);
 
 // set viewOptions waypoints to update with map clicked waypoints after control
 
-// if (viewOptions._waypoints)
+console.log(viewOptions);
+
+if (viewOptions._waypoints) {
+
+}
 
 
 var start = true;
@@ -111,14 +113,15 @@ map.on('click', function(e) {
   } else if (end) {
     control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
 
-    var updatedWaypoints = plan._waypoints;
     var linkOptions = toolsControl._getLinkOptions();
-    linkOptions.waypoints = updatedWaypoints;
+    // update waypoints with the new waypoints
+    linkOptions.waypoints = plan._waypoints;
 
-    console.log(linkOptions);
-
+    // generate the link
     var getLink = links.format(window.location.href, linkOptions);
     console.log(getLink);
+
+    // we will them modify the url
   }
 });
 
