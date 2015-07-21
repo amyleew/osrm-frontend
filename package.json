@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "eslint index.js src",
-    "build": "browserify index.js | uglifyjs -c -m > bundle.js",
-    "start": "budo index.js --serve=bundle.js --live -d | bistre"
+    "build": "browserify -d index.js -s osrm > js/osrm.bundle.js",
+    "build-print": "browserify -d printing.js -s osrm > js/osrm.printing.dev.js",
+    "build-min": "browserify -d index.js -s osrm | uglifyjs -c warnings=false -m > js/osrm.bundle.min.js",
+    "build-print-min": "browserify -d printing.js -s osrm | uglifyjs -c warnings=false -m > js/osrm.printing.min.dev.js",
+    "start": "budo index.js --serve=js/osrm.bundle.js:js/osrm.printing.dev.js --live -d | bistre",
+    "prepub": "npm run build && npm run build-print"
   },
   "repository": {
     "type": "git",

@@ -158,15 +158,19 @@ var Control = L.Control.extend({
   _printPage: function() {
     var options = this._getLinkOptions(),
         validWPs = options.waypoints.filter(function(wp) { return wp.latLng !== undefined; }),
-        link = window.location.href.replace("/index.html?", "/printing.html?").replace("/?", "/printing.html?");
-    if (link.slice(-1) === '/') {
+        link = window.location.href.replace("/index.html#", "/printing.html#").replace("/#", "/printing.html#")
+        console.log(link);
+
+    if (link.slice(-1) === '#') {
       link += "printing.html";
+	  alert('yes');
     }
     if (validWPs.length < 2 ) {
       return;
     }
-    console.log(links.format(link, options));
-    window.location.href = links.format(link, options);
+    // this doesn't happen
+    //console.log(links.format(link, options));
+    window.location.href = link;//links.format(link, options);
   },
 
   _selectLocalization: function() {

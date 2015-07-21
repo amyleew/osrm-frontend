@@ -520,6 +520,16 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
   font-weight: normal;
 }
 
+.leaflet-osrm-geocoder-label
+{
+  width: 20px;
+  height: 20px;
+  font-family: Arial;
+  font-variant: bold;
+  font-size: 20px;
+  color: #fff;
+}
+
 .leaflet-routing-alt-minimized .osrm-directions-summary
 {
   color: #DB5C0A;
@@ -571,6 +581,30 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 .leaflet-routing-icon-enter-roundabout { background-position: -210px 0; }
 .leaflet-routing-icon-arrive           { background-position: -237px 0; }
 .leaflet-routing-icon-via              { background-position: -260px 0; }
+
+
+/*  FORM Labels */
+
+.osrm-form-label {
+  cursor: default;
+}
+
+.osrm-directions-origin .osrm-form-label {
+    background-color: #ee8a65;
+}
+.osrm-directions-via {
+    background-color: white;
+    position: relative;
+}
+.osrm-directions-via .osrm-form-label {
+    background-color: #CCC;
+}
+
+.osrm-directions-via input {
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+
+
 
 
 
