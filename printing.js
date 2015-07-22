@@ -20,11 +20,13 @@ var map = L.map('map', {
   }
   ).setView(parsedOptions.center, viewOptions.zoom);
 
+
 var mapbox = L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'), {
 	attribution: 'Maps by <a href="https://www.mapbox.com/about/maps/">MapBox</a>. ' +
 		'Routes from <a href="http://project-osrm.org/">OSRM</a>, ' +
 		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
 }).addTo(map);
+
 
 var printMap = L.Routing.control({
   waypoints: parsedOptions.waypoints,
@@ -33,14 +35,16 @@ var printMap = L.Routing.control({
 }).addTo(map);
 
 
-console.log(printMap);
+console.log('map.getSize().x = '+map.getSize().x);
+console.log(L.Routing.itinerary({language: viewOptions.language}).onAdd());
+
+
 /*
 var osrm = L.Routing.osrm();
 var itinerary = L.Routing.itinerary({language: viewOptions.language});
 var itineraryContainer = itinerary.onAdd();
 //console.log(itineraryContainer);
 document.getElementById("instructions").appendChild(itineraryContainer);
-
 
 osrm.route(viewOptions.waypoints, function(error, alts) {
   var altIdx = viewOptions.alternative ? viewOptions.alternative : 0,
