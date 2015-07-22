@@ -1,9 +1,11 @@
 "use strict";
 
-var itineraryBuilder = require('./src/itinerary_builder.js');
-var createGeocoder = require('./src/geocoder.js');
-var links = require('./src/links.js');
-var options = require('./src/lrm_options.js');
+var Geocoder = require('leaflet-control-geocoder');
+var LRM = require('leaflet-routing-machine');
+var itineraryBuilder = require('./src/itinerary_builder');
+var createGeocoder = require('./src/geocoder');
+var links = require('./src/links');
+var options = require('./src/lrm_options');
 var mapView = require('./src/leaflet_options');
 
 var parsedOptions = links.parse(window.location.hash);
@@ -16,7 +18,7 @@ var map = L.map('map', {
     touchZoom: false,
     doubleClickZoom: false
   }
-  ).setView(viewOptions.center, viewOptions.zoom);
+  ).setView(parsedOptions.center, viewOptions.zoom);
 
 var mapbox = L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'), {
 	attribution: 'Maps by <a href="https://www.mapbox.com/about/maps/">MapBox</a>. ' +
@@ -24,10 +26,21 @@ var mapbox = L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.
 		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
 }).addTo(map);
 
-var osrm = L.Routing.OSRM();
+var printMap = L.Routing.control({
+  waypoints: parsedOptions.waypoints,
+  //routeWhileDragging: true,
+  //geocoder: Geocoder.nominatim(),
+}).addTo(map);
+
+
+console.log(printMap);
+/*
+var osrm = L.Routing.osrm();
 var itinerary = L.Routing.itinerary({language: viewOptions.language});
 var itineraryContainer = itinerary.onAdd();
+//console.log(itineraryContainer);
 document.getElementById("instructions").appendChild(itineraryContainer);
+
 
 osrm.route(viewOptions.waypoints, function(error, alts) {
   var altIdx = viewOptions.alternative ? viewOptions.alternative : 0,
@@ -43,3 +56,6 @@ osrm.route(viewOptions.waypoints, function(error, alts) {
   itinerary.setAlternatives(alts);
   itinerary.selectAlternative(altIdx);
 }, null, {});
+*/
+
+

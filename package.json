@@ -7,9 +7,9 @@
     "test": "eslint index.js src",
     "build": "browserify -d index.js -s osrm > js/osrm.bundle.js",
     "build-print": "browserify -d printing.js -s osrm > js/osrm.printing.dev.js",
-    "build-min": "browserify -d index.js -s osrm | uglifyjs -c warnings=false -m > js/osrm.bundle.min.js",
-    "build-print-min": "browserify -d printing.js -s osrm | uglifyjs -c warnings=false -m > js/osrm.printing.min.dev.js",
-    "start": "budo index.js --serve=js/osrm.bundle.js:js/osrm.printing.dev.js --live -d | bistre",
+    "start-index": "budo index.js --serve=js/osrm.bundle.js --live -d | bistre",
+    "start-print": "budo printing.js --serve=js/osrm.printing.dev.js --live -d | bistre",
+    "start": "npm run start-print && npm run start-index",
     "prepub": "npm run build && npm run build-print"
   },
   "repository": {

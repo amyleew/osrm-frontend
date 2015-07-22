@@ -1,9 +1,9 @@
 'use strict';
 
 var Geocoder = require('leaflet-control-geocoder');
-require('leaflet-routing-machine');
+var LRM = require('leaflet-routing-machine');
 var options = require('./src/lrm_options');
-var links = require('./src/links.js');
+var links = require('./src/links');
 var mapView = require('./src/leaflet_options');
 var tools = require('./src/tools');
 var mapLayer = mapView.layer;
@@ -93,6 +93,8 @@ if (viewOptions.waypoints.length > 1) {
 
 map.on('click', mapChange);
 plan.on('waypointschanged', updateHash);
+
+
 
 function mapChange(e) {
   var length = control.getWaypoints().filter(function(pnt) {
