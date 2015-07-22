@@ -83,12 +83,9 @@ var control = L.Routing.control({
   stepClassName: options.lrm.stepClassName
 }).addTo(map);
 
-// set viewOptions waypoints to update with map clicked waypoints after control
-
-
+// set waypoints from hash values
 if (viewOptions.waypoints.length > 1) {
-  control.spliceWaypoints(0, 1, viewOptions.waypoints[0].latLng);
-  control.spliceWaypoints(control.getWaypoints().length - 1, 1, viewOptions.waypoints[1].latLng);
+  control.setWaypoints(viewOptions.waypoints);
 }
 
 map.on('click', mapChange);
@@ -98,7 +95,7 @@ function mapChange(e) {
   var length = control.getWaypoints().filter(function(pnt) {
     return pnt.latLng;
   });
-  
+
   length = length.length;
 
   if (!length) {
