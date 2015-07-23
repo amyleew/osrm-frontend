@@ -21,7 +21,8 @@ mapLayer = mapLayer.reduce(function(title, layer) {
 
 /* Add the map class */
 var map = L.map('map', {
-  zoomControl: false
+  zoomControl: false,
+  dragging: true
 }).setView(viewOptions.center, viewOptions.zoom);
 
 /* Tile default layer */
@@ -66,6 +67,9 @@ var ReversablePlan = L.Routing.Plan.extend({
 var plan = new ReversablePlan([], {
   geocoder: Geocoder.nominatim(),
   routeWhileDragging: true,
+  routeDragInterval: 2,
+  addWaypoints: false,
+  waypointMode: 'snap',
   position: 'topright',
   useZoomParameter: true,
   reverseWaypoints: true,
@@ -74,7 +78,6 @@ var plan = new ReversablePlan([], {
 });
 
 var control = L.Routing.control({
-  routeWhileDragging: true,
   plan: plan,
   lineOptions: options.lrm.lineOptions,
   summaryTemplate: options.lrm.summaryTemplate,
@@ -88,10 +91,8 @@ if (viewOptions.waypoints.length > 1) {
   control.setWaypoints(viewOptions.waypoints);
 }
 
-map.on('click', mapChange);
+var mapClick = map.on('click', mapChange);
 plan.on('waypointschanged', updateHash);
-
-
 
 function mapChange(e) {
   var length = control.getWaypoints().filter(function(pnt) {
@@ -106,7 +107,9 @@ function mapChange(e) {
     if (length === 1) length = length + 1;
     control.spliceWaypoints(length - 1, 1, e.latlng);
     updateHash();
+    map.off('click');
   }
+
 }
 
 function updateHash() {
@@ -122,3 +125,9 @@ function updateHash() {
   var hash = links.format(window.location.href, linkOptions).split('?');
   window.location.hash = hash[1];
 }
+
+
+
+
+
+

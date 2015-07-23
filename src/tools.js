@@ -159,7 +159,8 @@ var Control = L.Control.extend({
     var options = this._getLinkOptions(),
         validWPs = options.waypoints.filter(function(wp) { return wp.latLng !== undefined; }),
         link = window.location.href.replace("/index.html#", "/printing.html#").replace("/#", "/printing.html#")
-        console.log(link);
+        window.open(link);
+
 
     if (link.slice(-1) === '#') {
       link += "printing.html";
@@ -167,16 +168,10 @@ var Control = L.Control.extend({
     }
     if (validWPs.length < 2 ) {
       return;
-    }
-    // this doesn't happen
-    //console.log(links.format(link, options));
-    window.location.href = link;//links.format(link, options);
+    }   
   },
 
   _selectLocalization: function() {
-    alert('whats happening');
-    console.log('am i running?');
-    /*
     var container = L.DomUtil.create('div', 'leaflet-osrm-tools-localization-popup'),
         languageList = L.DomUtil.create('ul', 'leaflet-osrm-tools-language-list', container),
         unitsList = L.DomUtil.create('ul', 'leaflet-osrm-tools-units-list', container),
@@ -196,7 +191,7 @@ var Control = L.Control.extend({
       link.alt = localization[language].name;
       link.innerHTML = localization[language].name;
     }
-
+        
     options.language = this.options.language;
     unitSystems = ['Metric', 'Imperial'];
     for (i = 0; i < unitSystems.length; i++)
@@ -208,12 +203,12 @@ var Control = L.Control.extend({
       link.alt = unitSystems[i];
       link.innerHTML = unitSystems[i];
     }
-
+    
     this._openPopup(container);
-    */
   },
 
   _updateDownloadLink: function() {
+    alert('hfaf');
     var plan = this._lrm.getPlan(),
         router = this._lrm.getRouter(),
         url;
