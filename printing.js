@@ -27,24 +27,34 @@ var mapbox = L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.
 		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
 }).addTo(map);
 
-
+/*
+// placing map values directly
 var printMap = L.Routing.control({
   waypoints: parsedOptions.waypoints,
   //routeWhileDragging: true,
   //geocoder: Geocoder.nominatim(),
 }).addTo(map);
+*/
 
+//console.log('map.getSize().x = '+map.getSize().x);
+//console.log(L.Routing.itinerary({language: viewOptions.language}).onAdd());
 
-console.log('map.getSize().x = '+map.getSize().x);
-console.log(L.Routing.itinerary({language: viewOptions.language}).onAdd());
+//console.log
 
-
-/*
 var osrm = L.Routing.osrm();
 var itinerary = L.Routing.itinerary({language: viewOptions.language});
-var itineraryContainer = itinerary.onAdd();
-//console.log(itineraryContainer);
+var itineraryContainer = itinerary.onAdd(map);
+
+/*
+var itineraryContainer = itinerary.onAdd(function(map) {
+  console.log(map);
+});
+*/
+
+console.log(itineraryContainer);
 document.getElementById("instructions").appendChild(itineraryContainer);
+
+//`onAdd(console.log);`
 
 osrm.route(viewOptions.waypoints, function(error, alts) {
   var altIdx = viewOptions.alternative ? viewOptions.alternative : 0,
@@ -60,6 +70,6 @@ osrm.route(viewOptions.waypoints, function(error, alts) {
   itinerary.setAlternatives(alts);
   itinerary.selectAlternative(altIdx);
 }, null, {});
-*/
+/**/
 
 
