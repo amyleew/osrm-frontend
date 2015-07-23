@@ -1,0 +1,22 @@
+/* PRINTING */
+
+#map {
+    width: 18cm;
+    height: 10cm;
+    z-index: 0;
+}
+
+.leaflet-routing-container {
+    page-break-before: always;
+    width: 18cm;
+    height: auto !important;
+}
+
+.leaflet-routing-alt {
+  max-height: none !important;
+  overflow-y: auto !important;
+}
+
+.leaflet-routing-alt-minimized {
+  display: none;
+}
