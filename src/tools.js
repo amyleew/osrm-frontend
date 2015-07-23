@@ -1,7 +1,7 @@
 "use strict";
 
-var links = require('./links.js'),
-    localization = require('./localization.js');
+var links = require('./links'),
+    localization = require('./localization');
 
 var Control = L.Control.extend({
   include: L.Mixin.Events,
@@ -174,6 +174,9 @@ var Control = L.Control.extend({
   },
 
   _selectLocalization: function() {
+    alert('whats happening');
+    console.log('am i running?');
+    /*
     var container = L.DomUtil.create('div', 'leaflet-osrm-tools-localization-popup'),
         languageList = L.DomUtil.create('ul', 'leaflet-osrm-tools-language-list', container),
         unitsList = L.DomUtil.create('ul', 'leaflet-osrm-tools-units-list', container),
@@ -207,6 +210,7 @@ var Control = L.Control.extend({
     }
 
     this._openPopup(container);
+    */
   },
 
   _updateDownloadLink: function() {

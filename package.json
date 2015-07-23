@@ -9,7 +9,7 @@
     "build-print": "browserify -d printing.js -s osrm > js/osrm.printing.dev.js",
     "start-index": "budo index.js --serve=js/osrm.bundle.js --live -d | bistre",
     "start-print": "budo printing.js --serve=js/osrm.printing.dev.js --live -d | bistre",
-    "start": "npm run start-print && npm run start-index",
+    "start": "npm run build && npm run build-print && npm run start-print && npm run start-index",
     "prepub": "npm run build && npm run build-print"
   },
   "repository": {
