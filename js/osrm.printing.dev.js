@@ -14765,7 +14765,7 @@ module.exports = {
   },
 
   tools: {
-    popupWindowClass: 'fill-dark dark',
+    popupWindowClass: 'fill-osrm dark',
     popupCloseButtonClass: 'osrm-directions-icon osrm-close-icon',
     linkButtonClass: 'osrm-directions-icon osrm-link-icon',
     editorButtonClass: 'osrm-directions-icon osrm-editor-icon',

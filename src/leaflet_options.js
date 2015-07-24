@@ -8,6 +8,7 @@ module.exports = {
     zoom: 13,
     waypoints: [],
     language: 'en',
+    alternative: true,
 	// best way to pass??
     layer: 'mapbox.emerald'
   },

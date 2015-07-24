@@ -31,7 +31,6 @@ var osrm = L.Routing.osrm();
 var itinerary = L.Routing.itinerary({language: viewOptions.language});
 var itineraryContainer = itinerary.onAdd(map);
 
-console.log(itineraryContainer);
 document.getElementById("instructions").appendChild(itineraryContainer);
 
 osrm.route(viewOptions.waypoints, function(error, alts) {
@@ -40,6 +39,7 @@ osrm.route(viewOptions.waypoints, function(error, alts) {
       bounds,
       i;
   line.addTo(map);
+  console.log(line);
   map.fitBounds(line.getBounds());
 
   viewOptions.waypoints.map(function (wp) {

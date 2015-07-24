@@ -109,7 +109,6 @@ function mapChange(e) {
     updateHash();
     map.off('click');
   }
-
 }
 
 function updateHash() {
@@ -124,6 +123,7 @@ function updateHash() {
 
   var hash = links.format(window.location.href, linkOptions).split('?');
   window.location.hash = hash[1];
+  
 }
 
 
