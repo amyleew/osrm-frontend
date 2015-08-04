@@ -26,7 +26,7 @@ var map = L.map('map', {
 }).setView(viewOptions.center, viewOptions.zoom);
 
 /* Tile default layer */
-L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{x}/{y}@2x.png?access_token=' + window.localStorage.getItem('mapbox_access_token'), {
+L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoibXNsZWUiLCJhIjoiclpiTWV5SSJ9.P_h8r37vD8jpIH1A6i1VRg', {
 	attribution: 'Maps by <a href="https://www.mapbox.com/about/maps/">MapBox</a>. ' +
 		'Routes from <a href="http://project-osrm.org/">OSRM</a>, ' +
 		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
