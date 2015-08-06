@@ -58,43 +58,6 @@ button::-moz-focus-inner {
   font:15px/20px 'Open Sans', sans-serif;
 }
 
-/* @FontFace
-------------------------------------------------------- */
-@font-face {
-  font-family:'Brandon';
-    src:url('brandon_blk.eot');
-    src:url('brandon_blk.eot#iefix') format('embedded-opentype'),
-        url('brandon_blk.woff') format('woff');
-  }
-
-@font-face {
-  font-family:'Open Sans';
-    src:url('opensans-regular.eot');
-    src:url('opensans-regular.eot#iefix') format('embedded-opentype'),
-        url('opensans-regular.woff') format('woff');
-  }
-
-@font-face {
-  font-family:'Open Sans Italic';
-    src:url('opensans-italic.eot');
-    src:url('opensans-italic.eot#iefix') format('embedded-opentype'),
-        url('opensans-italic.woff') format('woff');
-  }
-
-@font-face {
-  font-family:'Open Sans Bold';
-    src:url('opensans-bold.eot');
-    src:url('opensans-bold.eot#iefix') format('embedded-opentype'),
-        url('opensans-bold.woff') format('woff');
-  }
-
-@font-face {
-  font-family:'Open Sans Bold Italic';
-    src:url('opensans-bolditalic.eot');
-    src:url('opensans-bolditalic.eot#iefix') format('embedded-opentype'),
-        url('opensans-bolditalic.woff') format('woff');
-  }
-
 /* Inline Elements: Defaults
 ------------------------------------------------------- */
 body,
@@ -107,18 +70,21 @@ textarea {
   }
 
 body { background:#fff; }
-.dark { color:#fff; }
+/* IMPORTANT FOR ROUTE INSTRUCTIONS */
+.dark { color: #4d0c8e; }
 
+/*
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family:'Open Sans Bold', sans-serif;
+  font-family:'Open Sans Condensed Bold', sans-serif;
   font-weight:normal;
   margin:0;
   }
+*/
 
 em h1, h1 em,
 em h2, h2 em,
@@ -126,7 +92,7 @@ em h3, h3 em,
 em h4, h4 em,
 em h5, h5 em,
 em h6, h6 em {
-  font-family:'Open Sans Bold Italic', sans-serif;
+  font-family:'Open Sans Condensed Bold', sans-serif;
   }
 
 h1 {
@@ -174,11 +140,11 @@ small { display:block; }
 
 .strong,
 strong {
-  font-family:'Open Sans Bold', sans-serif;
+  font-family:'Open Sans Condensed Bold', sans-serif;
   font-weight:normal;
   }
   strong em,
-  em strong { font-family:'Open Sans Bold Italic', sans-serif; }
+  em strong { font-family:'Open Sans Condensed Bold', sans-serif; }
 
 address,
 em {
@@ -298,7 +264,7 @@ a.quiet.dark.active, a.quiet.dark:hover { color:rgba(255,255,255,0.5); }
   white-space:nowrap;
   text-overflow:ellipsis;
   /* Protects button metrics in .prose context */
-  font-family:'Open Sans Bold', sans-serif;
+  font-family:'Open Sans Condensed Bold', sans-serif;
   line-height:20px;
   font-size:12px;
   -webkit-appearance:none;
@@ -563,7 +529,7 @@ a.quiet.dark.active, a.quiet.dark:hover { color:rgba(255,255,255,0.5); }
     border-bottom:1px solid rgba(0,0,0,0.25);
     background:transparent;
     color:rgba(0,0,0,.5);
-    font-family:'Open Sans Bold', sans-serif;
+    font-family:'Open Sans Condensed Bold', sans-serif;
     font-size:12px;
     text-align:center;
     display:inline-block;
@@ -1002,7 +968,7 @@ form fieldset:last-child {
   }
 
 form fieldset label {
-  font:12px/20px 'Open Sans Bold', sans-serif;
+  font:12px/20px 'Open Sans Condensed Bold', sans-serif;
   display:block;
   margin:0 0 5px;
   }
@@ -1344,7 +1310,7 @@ table {
     border-bottom:1px solid #ddd;
     }
   table th {
-    font-family:'Open Sans Bold', sans-serif;
+    font-family:'Open Sans Condensed Bold', sans-serif;
     }
   table thead th {
     vertical-align:bottom;

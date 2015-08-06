@@ -4,7 +4,7 @@
 .osrm-directions-errors,
 .osrm-directions-routes,
 .osrm-directions-instructions {
-    font:15px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font:15px/20px 'Open Sans', sans-serif;
 	margin-bottom: 30px;
 }
 
@@ -46,6 +46,10 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 
 /* tool colors and divs */
 
+.fill-osrm {
+  background-color: #8952cf;
+}
+
 .fill-dark {
   background-color: #404040;
 }
@@ -58,7 +62,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 
 .leaflet-control-scale {
   position: absolute;
-  left: 180px;
+  left: 160px;
   bottom: 5px;
 }
 
@@ -83,7 +87,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 
 .leaflet-routing-container.dark {
    z-index: 10;
-   background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.8);
+   background: none repeat scroll 0% 0% rgba(246, 239, 248, 0.8);
    top: 0px;
    right: 0px;
    bottom: 0px;
@@ -114,9 +118,12 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
   margin-right: 3px;
   float: right;
   cursor: pointer;
-  background-color: #ccc;
+  background-color: #8952cf;
   transition: background-color 0.2s ease;
   border: 0px;
+  border-radius: 5px;
+  margin-top: -3px;
+  margin-right: 0px;
 }
 
 .leaflet-routing-add-waypoint {
@@ -128,8 +135,9 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 }
 
 .leaflet-routing-reverse-waypoints:after {
-  font-weight: normal;
+  font-weight: bold;
   content: '\21c5';
+  color: white;
 }
 
 
@@ -156,11 +164,11 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
   content: "\00d7";
   text-align: center;
   cursor: pointer;
-  color: #ccc;
+  color: #8952cf;
   background: white;
-  padding-bottom: 16px;
-  margin-top: -16px;
-  margin-left: -10px;
+  padding-bottom: 16px;    
+	margin-top: -10px;
+   margin-left: 0px;
   line-height: 1;
 }
 
@@ -169,6 +177,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
     display: inline-block;
     vertical-align: middle;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 
@@ -196,7 +205,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 }
 
 .osrm-directions-icon {
-    background-image: url('images/osrm.toolbar.icons.png');
+    background-image: url('../images/osrm.toolbar.icons.png');
     -webkit-background-size: 120px 20px;
     /* background-size: 280px 20px; 
     background-repeat: no-repeat; */
@@ -229,11 +238,12 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 {
    background-color: rgba(255, 255, 255, 0.2);
 }
+
 .leaflet-osrm-tools-editor
 {
   position: absolute;
   top: 3px;
-  left: 28px;
+  left: 3px;
 }
 .leaflet-osrm-tools-editor:hover
 {
@@ -243,7 +253,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 {
   position: absolute;
   top: 3px;
-  left: 53px;
+  left: 28px;
 }
 .leaflet-osrm-tools-josm:hover
 {
@@ -286,7 +296,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 {
   position: absolute;
   top: 3px;
-  left: 78px;
+  left: 53px;
 }
 
 
@@ -299,7 +309,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 {
   position: absolute;
   top: 3px;
-  left: 103px;
+  left: 78px;
 }
 .leaflet-osrm-tools-print:hover
 {
@@ -310,7 +320,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 {
   position: absolute;
   top: 3px;
-  left: 128px;
+  left: 103px;
   text-align: center;
 }
 .leaflet-osrm-tools-gpx a {
@@ -382,10 +392,27 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
   min-width: 200px;
 }
 
+.osrm-directions-inputs input:first-child {
+	border-top: 0px;
+  border-right: 0px;
+  border-bottom: 0px;
+  border-left-width: 5px;
+  height: 100%;
+  border-left-color: blue;
+}
+
+.osrm-directions-inputs input:last-child {
+	border-top: 0px;
+  border-right: 0px;
+  border-bottom: 0px;
+  border-left-width: 5px;
+  height: 100%;
+  border-left-color: red;
+}
+
 .osrm-directions-inputs input {
   font-size: 11px;
   width: 90%;
-  border: 0;
   background-color: transparent;
   height: 30px;
   color: rgba(0,0,0,.5);
@@ -446,7 +473,7 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 .leaflet-osrm-tools-container
 {
    cursor: pointer;
-   width: 161px;
+   width: 140px;
    height: 26px;
 }
 
@@ -502,10 +529,37 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 }
 
 
-/* Summary color change */
-.leaflet-routing-alt .osrm-directions-summary
+/* Directions Summary */
+
+.osrm-directions-summary
 {
-  color: #ABCC9F;
+  color: #40007d;
+}
+
+.leaflet-routing-alt-minimized .osrm-directions-summary
+{
+  color: #022bb1;
+  padding-top: 10px;
+}
+
+.leaflet-routing-alt table td,
+.leaflet-routing-alt table { 
+  color: #61428A;
+  margin-top: 20px;
+  padding: 5px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  font-weight: 200;
+}
+
+.leaflet-routing-alt-minimized table td,
+.leaflet-routing-alt-minimized table { 
+  color: #022bb1;
+  margin-top: 20px;
+  padding: 5px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  font-weight: 200;
 }
 
 .osrm-directions-summary h2
@@ -530,34 +584,17 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
   color: #fff;
 }
 
-.leaflet-routing-alt-minimized .osrm-directions-summary
-{
-  color: #DB5C0A;
-  padding-top: 10px;
-}
-
-.leaflet-routing-alt table,
-.leaflet-routing-alt table td { 
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 20px;
-  padding: 5px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  font-weight: 200;
-}
-
 .leaflet-routing-alt table td:hover {
-    color: rgba(255, 255, 255, 1);
     cursor: pointer;
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: white;
 }
 
 .leaflet-routing-alt table tr:hover {
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: white;
 }
 
 .leaflet-routing-icon {
-    background-image: url('images/osrm.directions.icons.png');
+    background-image: url('../images/osrm.directions.icons-purp.png');
     -webkit-background-size: 280px 20px;
     background-size: 280px 20px;
     background-repeat: no-repeat;
@@ -567,6 +604,10 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
     vertical-align: top;
     width: 20px;
     height: 20px;
+}
+
+.leaflet-routing-alt-minimized .leaflet-routing-icon {
+    background-image: url('../images/osrm.directions.icons-blue.png');
 }
 
 .leaflet-routing-icon-continue         { background-position: 0 0; }
@@ -605,8 +646,31 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 }
 
 
+/* @FontFace
+------------------------------------------------------- */
 
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-regular-webfont.eot');
+    src: url('opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('opensans-regular-webfont.woff2') format('woff2'),
+         url('opensans-regular-webfont.woff') format('woff'),
+}
 
+@font-face {
+    font-family: 'Open Sans Condensed Bold';
+    src: url('opensans-condbold-webfont.eot');
+    src: url('opensans-condbold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('opensans-condbold-webfont.woff2') format('woff2'),
+         url('opensans-condbold-webfont.woff') format('woff'),
+}
 
+@font-face {
+    font-family: 'Open Sans Condensed Light';
+    src: url('opensans-condlight-webfont.eot');
+    src: url('opensans-condlight-webfont.eot?#iefix') format('embedded-opentype'),
+         url('opensans-condlight-webfont.woff2') format('woff2'),
+         url('opensans-condlight-webfont.woff') format('woff'),
+}
 
 

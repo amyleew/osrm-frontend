@@ -19,6 +19,7 @@ mapLayer = mapLayer.reduce(function(title, layer) {
   return title;
 });
 
+
 /* Add the map class */
 var map = L.map('map', {
   zoomControl: false,
@@ -27,7 +28,7 @@ var map = L.map('map', {
 
 /* Tile default layer */
 L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoibXNsZWUiLCJhIjoiclpiTWV5SSJ9.P_h8r37vD8jpIH1A6i1VRg', {
-	attribution: 'Maps by <a href="https://www.mapbox.com/about/maps/">MapBox</a>. ' +
+	attribution: 'Maps by <a href="https://www.mapbox.com/about/maps/">Mapbox</a>. ' +
 		'Routes from <a href="http://project-osrm.org/">OSRM</a>, ' +
 		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
 }).addTo(map);
@@ -64,9 +65,25 @@ var ReversablePlan = L.Routing.Plan.extend({
   }
 });
 
+function makeIcon(i) {
+    var url = i == 0 ? 'images/marker_start.png' : 'images/marker_end.png';
+    return L.icon({
+        iconUrl: url,
+        iconSize: [40, 42]
+    });
+}
+
 var plan = new ReversablePlan([], {
   geocoder: Geocoder.nominatim(),
   routeWhileDragging: true,
+  createMarker: function(i, wp) {
+        var options = {
+                draggable: this.draggableWaypoints,
+                icon: makeIcon(i)
+            },
+            marker = L.marker(wp.latLng, options);
+        return marker;
+  },
   routeDragInterval: 2,
   addWaypoints: false,
   waypointMode: 'snap',
@@ -86,6 +103,22 @@ var control = L.Routing.control({
   stepClassName: options.lrm.stepClassName
 }).addTo(map);
 
+var altRoute;
+
+control.on('routesfound', function(e) {
+    if (e.routes.length > 1) {
+        altRoute = L.Routing.line(e.routes[1], options.lrm.altLineOptions);
+        altRoute.addTo(map);
+    }
+});
+
+
+control.on('routingstart', function(e) {
+    if (map.hasLayer(altRoute)) {
+        map.removeLayer(altRoute);
+    }
+})
+
 // set waypoints from hash values
 if (viewOptions.waypoints.length > 1) {
   control.setWaypoints(viewOptions.waypoints);
@@ -95,6 +128,7 @@ var mapClick = map.on('click', mapChange);
 plan.on('waypointschanged', updateHash);
 
 function mapChange(e) {
+
   var length = control.getWaypoints().filter(function(pnt) {
     return pnt.latLng;
   });
@@ -109,6 +143,7 @@ function mapChange(e) {
     updateHash();
     map.off('click');
   }
+
 }
 
 function updateHash() {
@@ -123,9 +158,8 @@ function updateHash() {
 
   var hash = links.format(window.location.href, linkOptions).split('?');
   window.location.hash = hash[1];
-  
-}
 
+}
 
 
 
