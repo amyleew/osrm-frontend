@@ -1,92 +1,90 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset=utf-8 />
-    <title>OSRM | Mapbox</title>
-    <meta name='viewport' content='initial-scale=1.0 maximum-scale=1.0'>
-    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css' />
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js'></script>
-    <link href='home.css' rel='stylesheet' />
-    <link href='base.css' rel='stylesheet' />
-  </head>
+<head>
+	<meta charset=utf-8 />
+	<title>Project OSRM</title>
+	<meta name='viewport' content='initial-scale=1.0 maximum-scale=1.0'>
+	<link href='site.css' rel='stylesheet' />
+</head>
     
-  <body>
+<body>
 
-    <div id='container' class='contain clearfix'>
-      <div class='row2'>
-        <div class='col3'><img class='logo' src='images/osrm-logo.svg'></div>
-        
-        <div class='col9'>
-        <div class='pill space-top2'><!--
-  --><a id='js-open-modalA' href='#' class='button short loud'>About</a><!--
-  --><a id='js-open-modalB' href='#' class='button short loud'>License</a><!--
-  --><a id='js-open-modalC' href='#' class='button short loud'>Support</a>
-        </div>
-        </div>
-      </div>
-      
-      <div id='body' class='row4 contain'>
-        <div id='map' class='map'></div>
-        
-        <div id='modalA' class='animate modal modal-content'>
-        <button id='js-close-modalA' class='fr close-link'>X</button> The Open Source Routing Machine (OSRM) is a C++ implementation of a high-performance routing engine for shortest paths in road networks. It combines sophisticated routing algorithms with the open and free road network data of the OpenStreetMap (OSM) project. Designed with OpenStreetMap compatibility in mind, OSM data files can be easily imported. A demo installation is sponsored by Karlsruhe Institute of Technology and previously by our friends at Geofabrik. OSRM is under active development.
-        </div>
-        
-        <div id='modalB' class='animate modal modal-content'>
-        <button id='js-close-modalB' class='fr close-link'>X</button> OSRM is free, open source, and available under the very permissive (simplified) 2-clause BSD license.
-        </div>
-        
-        <div id='modalC' class='animate modal modal-content'>
-        <button id='js-close-modalC' class='fr close-link'>X</button> Wiki [here]
-Mailing list [here]
-IRC Channel [server: irc.oftc.net, channel: #osrm]
-Bug Tracker [here]
+	<header>
+		<div class='row3 center'>
+			<img src='images/osrm_logo.svg' width='370' height='150'>
+		</div>
+	  
+	  <div class='fr'>  
+	  <!-- Place this tag where you want the button to render. -->
+		<a class="github-button" href="https://github.com/Project-OSRM/osrm-backend/fork" data-icon="octicon-git-branch" data-style="mega" data-count-href="/Project-OSRM/osrm-backend/network" data-count-api="/repos/Project-OSRM/osrm-backend#forks_count" data-count-aria-label="# forks on GitHub" aria-label="Fork Project-OSRM/osrm-backend on GitHub">Fork</a>
+		</div>
+		
+	</header>
 
-        </div>
-        
-        
-      </div>
-      
-      <div id='footer' class='small fr row2 center copyright'>copyright</div>
-    </div>
-    
+	<map class='contain'>
+		<div class='overlay col12'>
+			<div class='col6 margin4 space-top12 space-bottom2 title'>
+				Modern C++ routing engine for shortest paths in road networks.
+			</div>
+			<div class='col7 margin5'>
+				<div class='pad1y margin1 space-top4 button'>VIEW DEMO >></div>
+			</div>
+		</div>
+	</map>
+	
+	
+	<section class='pad2y'>
+	
+		<!-- headers -->
+		<div class='col12 clearfix'>
+	    <div class='col2 margin1 center'>
+	    	<div class='section-icons section1-icon space-bottom2'></div>
+	    </div>
+	    <div class='col2 margin1 center'>
+	    	<div class='section-icons section2-icon space-bottom2'></div>
+	    </div>
+	    <div class='col2 margin1 center'>
+	    	<div class='section-icons section3-icon space-bottom2'></div>
+	    </div>  
+	    <div class='col2 margin1'>Get in Touch.</div>
+		</div>
+		
+		<!-- content -->
+		<div class='col12 clearfix'>
+	    <div class='col2 margin1 center'>Flexible import of OpenStreetMap data.</div>
+	    <div class='col2 margin1 center'>Handles continental sized networks within miliseconds.</div>
+	    <div class='col2 margin1 center'>Supports car, foot, walk modes; easily customized through profiles.</div>
+	    <div class='col2 margin1'>
+	    	<div class='col12 clearfix'>
+	    		<div class='col2'>
+	    			<div class='social-icons social1-icon'></div>
+					</div>
+	    		<div class='col9 margin1'>IRC Channel</div>
+	    	</div>
+	    	<div class='col12 clearfix'>
+	    		<div class='col2'>
+	    			<div class='social-icons social2-icon'></div>
+					</div>	    		
+					<div class='col9 margin1'>Mailing List</div>
+				</div>
+	    	<div class='col12 clearfix'>
+	    		<div class='col2'>
+	    			<div class='social-icons social3-icon'></div>
+					</div>
+					<div class='col9 margin1'>Twitter</div>
+	    	</div>
+	    </div>
+		</div>
+		
+	</section>
 
-<script>
-var modalA = document.getElementById('modalA');
-var modalB = document.getElementById('modalB');
-var modalC = document.getElementById('modalC');
 
-var triggerA = document.getElementById('js-open-modalA');
-var closeA = document.getElementById('js-close-modalA');
-var triggerB = document.getElementById('js-open-modalB');
-var closeB = document.getElementById('js-close-modalB');
-var triggerC = document.getElementById('js-open-modalC');
-var closeC = document.getElementById('js-close-modalC');
+	<footer class='center pad-top2'>
+		© OSRM is free, open source, and available under the very permissive (simplified) 2-clause BSD license.
+	</footer>
 
-triggerA.addEventListener('click', function() {
-    modalA.classList.add('active');
-});
+	<!-- Place this tag right after the last button or just before your close body tag. -->
+	<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
 
-triggerB.addEventListener('click', function() {
-    modalB.classList.add('active');
-});
-
-triggerC.addEventListener('click', function() {
-    modalC.classList.add('active');
-});
-
-closeA.addEventListener('click', function() {
-    modalA.classList.remove('active');
-});
-closeB.addEventListener('click', function() {
-    modalB.classList.remove('active');
-});
-closeC.addEventListener('click', function() {
-    modalC.classList.remove('active');
-});
-
-</script>
-  
-  <script src='js/osrm.bundle.js'></script>
   </body>
 </html>
