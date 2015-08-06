@@ -66,7 +66,7 @@ header {
 }
 
 map {
-    height: 55vh;
+    height: 60vh;
     background-image: url('images/route_map.png');
     display: block;
     background-position: center center;
