@@ -32,6 +32,17 @@
 	text-align: center;
 }
 
+.subhead {
+  font-family: 'Open Sans Condensed Bold';
+	font-size: 20px;
+	color: rgba(40, 0, 125, 0.6);
+}
+
+.content {
+font-family: 'Open Sans Condensed Bold';
+font-size: 14px;
+color: rgba(100, 82, 207, 0.5);
+}
 
 /* Fills
 -------------------------------------------------------- */
@@ -55,7 +66,7 @@ body {
   font-size:100%;
   font:inherit;
   vertical-align:baseline;
-
+  /*overflow-y: hidden;*/
 }
 
 header {
@@ -78,10 +89,13 @@ section {
 }
 
 footer {
-    height: 5vh;
-    background: #939CB9;
-    color: #E6F2FA;
-}
+	height: 5vh;
+	background: #939CB9;
+	color: #E6F2FA;
+	font-family: 'Open Sans Condensed Light';
+	font-size: 12px;
+	letter-spacing: .5px;
+	}
 
 .contain {
     position:relative;
