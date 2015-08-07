@@ -1,6 +1,7 @@
 'use strict';
 /* global L */
 
+var LRM = require('leaflet-routing-machine');
 var links = require('./src/links');
 var mapView = require('./src/leaflet_options');
 
