@@ -33,29 +33,13 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{
 		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
 }).addTo(map);
 
+
 /* Leaflet Controls */
-var lrm = L.Routing.control(L.extend({
-  language: viewOptions.language,
-  units: viewOptions.units,
-  serviceUrl: mapView.services[0].path
-},
-  L.extend(
-    options.lrm)
-  )).addTo(map);
-
-// We need to do this the ugly way because of cyclic dependencies...
-// lrm.getPlan().options.createMarker = markerFactory(lrm, options.popup);
-
-var toolsControl = tools.control(lrm, L.extend({
-  position: 'bottomleft',
-  language: mapView.language
- }, options.tools)).addTo(map);
-
 L.control.layers(mapLayer,{}, {
     position: 'bottomleft',
   }).addTo(map);
-
 L.control.scale().addTo(map);
+
 
 /* OSRM setup */
 var ReversablePlan = L.Routing.Plan.extend({
@@ -77,15 +61,15 @@ var plan = new ReversablePlan([], {
   geocoder: Geocoder.nominatim(),
   routeWhileDragging: true,
   createMarker: function(i, wp) {
-        var options = {
-                draggable: this.draggableWaypoints,
-                icon: makeIcon(i)
-            },
-            marker = L.marker(wp.latLng, options);
-        return marker;
+    var options = {
+      draggable: this.draggableWaypoints,
+      icon: makeIcon(i)
+    },
+      marker = L.marker(wp.latLng, options);
+      return marker;
   },
   routeDragInterval: 2,
-  addWaypoints: false,
+  addWaypoints: true,
   waypointMode: 'snap',
   position: 'topright',
   useZoomParameter: true,
@@ -100,16 +84,33 @@ var control = L.Routing.control({
   summaryTemplate: options.lrm.summaryTemplate,
   containerClassName: options.lrm.containerClassName,
   alternativeClassName: options.lrm.alternativeClassName,
-  stepClassName: options.lrm.stepClassName
+  stepClassName: options.lrm.stepClassName,
+  language: viewOptions.language,
+  units: viewOptions.units,
+  serviceUrl: mapView.services[0].path
 }).addTo(map);
 
+var toolsControl = tools.control(control, L.extend({
+  position: 'bottomleft',
+  language: mapView.language
+ }, options.tools)).addTo(map);
+
+/*
 var altRoute;
 
+// this adds alt route line to map
 control.on('routesfound', function(e) {
     if (e.routes.length > 1) {
         altRoute = L.Routing.line(e.routes[1], options.lrm.altLineOptions);
         altRoute.addTo(map);
     }
+
+            console.log('yes');
+
+        // start off NOT showing route 2
+        var directions = document.querySelectorAll('.leaflet-routing-alt');
+        console.log(directions);
+        // directions[1].style.display = 'none';
 });
 
 
@@ -118,6 +119,14 @@ control.on('routingstart', function(e) {
         map.removeLayer(altRoute);
     }
 })
+
+*/
+
+if (viewOptions.waypoints.length < 1) {
+  //control.setWaypoints(viewOptions.waypoints);
+  console.log(viewOptions.waypoints);
+}
+
 
 // set waypoints from hash values
 if (viewOptions.waypoints.length > 1) {
@@ -159,8 +168,41 @@ function updateHash() {
   var hash = links.format(window.location.href, linkOptions).split('?');
   window.location.hash = hash[1];
 
+  console.log(length);
+
 }
 
+// figure out which route you are on
+var onRoute1 = true;
+
+control.on('alternateChosen', function(e) {
+  // console.log(document.querySelectorAll('.leaflet-routing-alt'));
+  if (onRoute1) {
+    //console.log("show route 2");
+    onRoute1 = false;
+    var directions = document.querySelectorAll('.leaflet-routing-alt');
+    directions[0].style.display = 'none';
+    directions[1].style.display = 'block';
+
+  } else {
+    //console.log("show route 1");
+    onRoute1 = true;
+    var directions = document.querySelectorAll('.leaflet-routing-alt');
+    directions[1].style.display = 'none';
+    directions[0].style.display = 'block';
+  }
+});
+
+//console.log(plan.options.addWaypoints);
+
+
+/*
+  console.log(document.querySelectorAll('.leaflet-routing-alt'));
+
+  var directions = document.querySelectorAll('.leaflet-routing-alt');
+  directions[1].style.display = 'none';
+
+  */
 
 
 
