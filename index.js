@@ -11,8 +11,7 @@ var mapLayer = mapView.layer;
 var parsedOptions = links.parse(window.location.hash);
 var viewOptions = L.extend(mapView.defaultView, parsedOptions);
 
-/* .reduce is a method available to arrays:
-   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce */
+/* .reduce is a method available to arrays: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce */
 mapLayer = mapLayer.reduce(function(title, layer) {
   /* pass vars in format for leaflet consumption */
   title[layer.label] = L.tileLayer(layer.tileLayer, {id: layer.label});
@@ -23,15 +22,10 @@ mapLayer = mapLayer.reduce(function(title, layer) {
 /* Add the map class */
 var map = L.map('map', {
   zoomControl: false,
-  dragging: true
+  dragging: true,
+  layers: mapView.defaultView.layer,
+  maxZoom: 18
 }).setView(viewOptions.center, viewOptions.zoom);
-
-/* Tile default layer */
-L.tileLayer('https://{s}.tiles.mapbox.com/v4/'+mapView.defaultView.layer+'/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoibXNsZWUiLCJhIjoiclpiTWV5SSJ9.P_h8r37vD8jpIH1A6i1VRg', {
-	attribution: 'Maps by <a href="https://www.mapbox.com/about/maps/">Mapbox</a>. ' +
-		'Routes from <a href="http://project-osrm.org/">OSRM</a>, ' +
-		'data uses <a href="http://opendatacommons.org/licenses/odbl/">ODbL</a> license'
-}).addTo(map);
 
 
 /* Leaflet Controls */
@@ -95,38 +89,10 @@ var toolsControl = tools.control(control, L.extend({
   language: mapView.language
  }, options.tools)).addTo(map);
 
-/*
-var altRoute;
-
-// this adds alt route line to map
-control.on('routesfound', function(e) {
-    if (e.routes.length > 1) {
-        altRoute = L.Routing.line(e.routes[1], options.lrm.altLineOptions);
-        altRoute.addTo(map);
-    }
-
-            console.log('yes');
-
-        // start off NOT showing route 2
-        var directions = document.querySelectorAll('.leaflet-routing-alt');
-        console.log(directions);
-        // directions[1].style.display = 'none';
-});
-
-
-control.on('routingstart', function(e) {
-    if (map.hasLayer(altRoute)) {
-        map.removeLayer(altRoute);
-    }
-})
-
-*/
 
 if (viewOptions.waypoints.length < 1) {
   //control.setWaypoints(viewOptions.waypoints);
-  console.log(viewOptions.waypoints);
 }
-
 
 // set waypoints from hash values
 if (viewOptions.waypoints.length > 1) {
@@ -167,9 +133,6 @@ function updateHash() {
 
   var hash = links.format(window.location.href, linkOptions).split('?');
   window.location.hash = hash[1];
-
-  console.log(length);
-
 }
 
 // figure out which route you are on
@@ -193,17 +156,6 @@ control.on('alternateChosen', function(e) {
   }
 });
 
-//console.log(plan.options.addWaypoints);
 
-
-/*
-  console.log(document.querySelectorAll('.leaflet-routing-alt'));
-
-  var directions = document.querySelectorAll('.leaflet-routing-alt');
-  directions[1].style.display = 'none';
-
-  */
-
-
-
+console.log(lineOptions);
 
