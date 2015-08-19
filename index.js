@@ -36,7 +36,6 @@ L.control.layers(mapLayer, overlay, {
 
 L.control.scale().addTo(map);
 
-
 /* OSRM setup */
 var ReversablePlan = L.Routing.Plan.extend({
   createGeocoders: function() {
@@ -45,24 +44,37 @@ var ReversablePlan = L.Routing.Plan.extend({
   }
 });
 
-function makeIcon(i) {
-    var url = i == 0 ? 'images/marker-icon-2x.png' : 'images/marker-icon-2x.png';
+/* Setup markers */
+function makeIcon(i, n) {
+  var url = 'images/marker-via-icon-2x.png';
+  var markerList = ['images/marker-start-icon-2x.png', 'images/marker-end-icon-2x.png'];
+  if (i === 0) {
     return L.icon({
-        iconUrl: url,
-        iconSize: [25, 41]
+      iconUrl: markerList[0],
+      iconSize: [25, 41]
     });
+  } if (i === n - 1) {
+    return L.icon({
+      iconUrl: markerList[1],
+      iconSize: [25, 41]
+    });
+  } else {
+    return L.icon({
+      iconUrl: url,
+      iconSize: [25, 41]
+    });
+  }
 }
 
 var plan = new ReversablePlan([], {
   geocoder: Geocoder.nominatim(),
   routeWhileDragging: true,
-  createMarker: function(i, wp) {
+  createMarker: function(i, wp, n) {
     var options = {
       draggable: this.draggableWaypoints,
-      icon: makeIcon(i)
-    },
-      marker = L.marker(wp.latLng, options);
-      return marker;
+      icon: makeIcon(i, n)
+    };
+    return L.marker(wp.latLng, options);
   },
   routeDragInterval: 2,
   addWaypoints: true,
