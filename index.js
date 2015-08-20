@@ -12,9 +12,8 @@ var overlay = mapView.overlay;
 var parsedOptions = links.parse(window.location.hash);
 var viewOptions = L.extend(mapView.defaultView, parsedOptions);
 
-/* .reduce is a method available to arrays: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce */
+// Pass basemap layers
 mapLayer = mapLayer.reduce(function(title, layer) {
-  /* pass vars in format for leaflet consumption */
   title[layer.label] = L.tileLayer(layer.tileLayer, {id: layer.label});
   return title;
 });
@@ -75,8 +74,9 @@ var plan = new ReversablePlan([], {
       icon: makeIcon(i, n)
     };
     return L.marker(wp.latLng, options);
+    console.log(L.marker(wp.latLng, options));
   },
-  routeDragInterval: 2,
+  routeDragInterval: 100,
   addWaypoints: false,
   waypointMode: 'snap',
   position: 'topright',
@@ -88,6 +88,7 @@ var plan = new ReversablePlan([], {
 
 var control = L.Routing.control({
   plan: plan,
+  routeWhileDragging: true,
   lineOptions: options.lrm.lineOptions,
   altLineOptions: options.lrm.altLineOptions,
   summaryTemplate: options.lrm.summaryTemplate,
@@ -115,11 +116,6 @@ if (viewOptions.waypoints.length > 1) {
 }
 
 // add onClick option
-var mapClick = map.on('click', mapChange);
-plan.on('waypointschanged', updateHash);
-
-
-// add onDrag option
 var mapClick = map.on('click', mapChange);
 plan.on('waypointschanged', updateHash);
 
@@ -179,16 +175,13 @@ function updateSearch() {
 var onRoute1 = true;
 
 control.on('alternateChosen', function(e) {
-  // console.log(document.querySelectorAll('.leaflet-routing-alt'));
   if (onRoute1) {
-    //console.log("show route 2");
     onRoute1 = false;
     var directions = document.querySelectorAll('.leaflet-routing-alt');
     directions[0].style.display = 'none';
     directions[1].style.display = 'block';
 
   } else {
-    //console.log("show route 1");
     onRoute1 = true;
     var directions = document.querySelectorAll('.leaflet-routing-alt');
     directions[1].style.display = 'none';
