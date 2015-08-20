@@ -26,12 +26,6 @@
     box-sizing: border-box;
 }
 
-
-/* Notes - UIs and client-side stuff and instructions (someone working on @Will said)
-while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processing...
-
-*/
-
 .map {
     background: #eee;
     position: absolute;
@@ -172,7 +166,6 @@ while core is updatd. HERE into OSRM then fixes to OSRM for better pre-processin
 }
 
 .leaflet-routing-add-waypoint {
-  display: none;
 }
 
 .leaflet-routing-add-waypoint:after {
