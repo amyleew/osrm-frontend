@@ -166,6 +166,7 @@
 }
 
 .leaflet-routing-add-waypoint {
+  display: none;
 }
 
 .leaflet-routing-add-waypoint:after {
