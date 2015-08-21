@@ -8,9 +8,11 @@ var mapView = require('./src/leaflet_options');
 var tools = require('./src/tools');
 var mapLayer = mapView.layer;
 var overlay = mapView.overlay;
+var markerFactory = require('./src/marker');
 
 var parsedOptions = links.parse(window.location.hash);
 var viewOptions = L.extend(mapView.defaultView, parsedOptions);
+
 
 // Pass basemap layers
 mapLayer = mapLayer.reduce(function(title, layer) {
@@ -50,17 +52,20 @@ function makeIcon(i, n) {
   if (i === 0) {
     return L.icon({
       iconUrl: markerList[0],
-      iconSize: [25, 41]
+      iconSize: [20, 56],
+      iconAnchor: [10, 28]
     });
   } if (i === n - 1) {
     return L.icon({
       iconUrl: markerList[1],
-      iconSize: [25, 41]
+      iconSize: [20, 56],
+      iconAnchor: [10, 28]
     });
   } else {
     return L.icon({
       iconUrl: url,
-      iconSize: [25, 41]
+      iconSize: [20, 56],
+      iconAnchor: [10, 28]
     });
   }
 }
@@ -84,6 +89,11 @@ var plan = new ReversablePlan([], {
   dragStyles: options.lrm.dragStyles,
   geocodersClassName: options.lrm.geocodersClassName
 });
+
+// add marker labels
+//lrm.getPlan().options.createMarker = markerFactory(lrm, theme.options.popup);
+plan.createMarker = markerFactory(plan, options.popup);
+
 
 var control = L.Routing.control({
   plan: plan,
@@ -120,11 +130,9 @@ plan.on('waypointschanged', updateHash);
 
 
 function mapChange(e) {
-
   var length = control.getWaypoints().filter(function(pnt) {
     return pnt.latLng;
   });
-
   length = length.length;
 
   if (!length) {
@@ -136,7 +144,6 @@ function mapChange(e) {
     updateSearch();
     map.off('click');
   }
-
 }
 
 // Update browser url
@@ -144,14 +151,15 @@ function updateHash() {
   var length = control.getWaypoints().filter(function(pnt) {
     return pnt.latLng;
   }).length;
-
   if (length < 2) return;
-
   var linkOptions = toolsControl._getLinkOptions();
   linkOptions.waypoints = plan._waypoints;
 
   var hash = links.format(window.location.href, linkOptions).split('?');
+  history.pushState(hash, {}, '?'+hash[1]);
   window.location.hash = hash[1];
+  event.preventDefault();
+  console.log('waypointschanged > updateHash');
 }
 
 
@@ -160,15 +168,16 @@ function updateSearch() {
   var length = control.getWaypoints().filter(function(pnt) {
     return pnt.latLng;
   }).length;
-
   if (length < 2) return;
-
   var linkOptions = toolsControl._getLinkOptions();
   linkOptions.waypoints = plan._waypoints;
 
   var search = links.format(window.location.href, linkOptions).split('?');
   window.location.search = search[1];
+  event.preventDefault();
+  console.log('click > mapChange > updateSearch');
 }
+
 
 // User selected routes
 var onRoute1 = true;
@@ -187,4 +196,8 @@ control.on('alternateChosen', function(e) {
     directions[0].style.display = 'block';
   }
 });
+
+
+
+
 
