@@ -45,6 +45,7 @@ var ReversablePlan = L.Routing.Plan.extend({
   }
 });
 
+
 /* Setup markers */
 function makeIcon(i, n) {
   var url = 'images/marker-via-icon-2x.png';
@@ -98,7 +99,6 @@ var plan = new ReversablePlan([], {
 //lrm.getPlan().options.createMarker = markerFactory(lrm, theme.options.popup);
 plan.createMarker = markerFactory(plan, options.popup);
 
-
 var control = L.Routing.control({
   plan: plan,
   routeWhileDragging: true,
@@ -132,7 +132,6 @@ if (viewOptions.waypoints.length > 1) {
 var mapClick = map.on('click', mapChange);
 plan.on('waypointschanged', updateHash);
 
-
 function mapChange(e) {
   var length = control.getWaypoints().filter(function(pnt) {
     return pnt.latLng;
@@ -144,9 +143,10 @@ function mapChange(e) {
   } else {
     if (length === 1) length = length + 1;
     control.spliceWaypoints(length - 1, 1, e.latlng);
-    map.off('click');
+    //map.off('click');
   }
 }
+
 
 // Update browser url
 function updateHash() {
@@ -160,6 +160,7 @@ function updateHash() {
   window.location.hash = hash[1];
 }
 
+
 // User selected routes
 control.on('alternateChosen', function(e) {
   var directions = document.querySelectorAll('.leaflet-routing-alt');
@@ -172,6 +173,23 @@ control.on('alternateChosen', function(e) {
     directions[1].style.display = 'none';
   }
 });
+
+
+// Add event listener for input box
+//console.log(document.querySelector('.div.leaflet-routing-geocoders.osrm-directions-inputs'));
+var inputHere = document.querySelectorAll('.leaflet-routing-geocoders.osrm-directions-inputs')[0];
+
+if (inputHere) {
+  inputHere.addEventListener('keypress', function(e) {
+    if (13 == e.keyCode) {
+      //debugger;
+      // runs _l_geocoder_0([{}]);
+      // plan.geocoder;
+      var response = JSON.parse(e);
+    }
+    //plan.createMarker
+  });
+}
 
 
 
