@@ -78,7 +78,11 @@ var plan = new ReversablePlan([], {
       draggable: this.draggableWaypoints,
       icon: makeIcon(i, n)
     };
-    return L.marker(wp.latLng, options);
+    var marker = L.marker(wp.latLng, options);
+    marker.on('click', function() {
+        plan.spliceWaypoints(i, 1);
+    });
+    return marker;
   },
   routeDragInterval: 100,
   addWaypoints: true,
@@ -140,8 +144,6 @@ function mapChange(e) {
   } else {
     if (length === 1) length = length + 1;
     control.spliceWaypoints(length - 1, 1, e.latlng);
-    //updateHash();
-    updateSearch();
     map.off('click');
   }
 }
@@ -151,49 +153,23 @@ function updateHash() {
   var length = control.getWaypoints().filter(function(pnt) {
     return pnt.latLng;
   }).length;
-  if (length < 2) return;
   var linkOptions = toolsControl._getLinkOptions();
   linkOptions.waypoints = plan._waypoints;
 
   var hash = links.format(window.location.href, linkOptions).split('?');
-  history.pushState(hash, {}, '?'+hash[1]);
   window.location.hash = hash[1];
-  event.preventDefault();
-  console.log('waypointschanged > updateHash');
 }
-
-
-// Add update search option
-function updateSearch() {
-  var length = control.getWaypoints().filter(function(pnt) {
-    return pnt.latLng;
-  }).length;
-  if (length < 2) return;
-  var linkOptions = toolsControl._getLinkOptions();
-  linkOptions.waypoints = plan._waypoints;
-
-  var search = links.format(window.location.href, linkOptions).split('?');
-  window.location.search = search[1];
-  event.preventDefault();
-  console.log('click > mapChange > updateSearch');
-}
-
 
 // User selected routes
-var onRoute1 = true;
-
 control.on('alternateChosen', function(e) {
-  if (onRoute1) {
-    onRoute1 = false;
-    var directions = document.querySelectorAll('.leaflet-routing-alt');
+  var directions = document.querySelectorAll('.leaflet-routing-alt');
+  if (directions[0].style.display != 'none') {
     directions[0].style.display = 'none';
     directions[1].style.display = 'block';
-
-  } else {
-    onRoute1 = true;
-    var directions = document.querySelectorAll('.leaflet-routing-alt');
-    directions[1].style.display = 'none';
+  }
+  else {
     directions[0].style.display = 'block';
+    directions[1].style.display = 'none';
   }
 });
 
