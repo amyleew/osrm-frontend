@@ -9,9 +9,9 @@ var tools = require('./src/tools');
 var mapLayer = mapView.layer;
 var overlay = mapView.overlay;
 var markerFactory = require('./src/marker');
-var locate = require('leaflet.locatecontrol')
+var locate = require('leaflet.locatecontrol');
 
-var parsedOptions = links.parse(window.location.hash);
+var parsedOptions = links.parse(window.location.href);
 var viewOptions = L.extend(mapView.defaultView, parsedOptions);
 
 // Pass basemap layers
@@ -19,7 +19,6 @@ mapLayer = mapLayer.reduce(function(title, layer) {
   title[layer.label] = L.tileLayer(layer.tileLayer, {id: layer.label});
   return title;
 });
-
 
 /* Add the map class */
 var map = L.map('map', {
@@ -93,7 +92,14 @@ var plan = new ReversablePlan([], {
   useZoomParameter: true,
   reverseWaypoints: true,
   dragStyles: options.lrm.dragStyles,
-  geocodersClassName: options.lrm.geocodersClassName
+  geocodersClassName: options.lrm.geocodersClassName,
+  geocoderPlaceholder: function(i,n) {
+    var startend = ['Start - press enter to drop marker', 'End - press enter to drop marker'];
+    var via = ['Via point - press enter to drop marker'];
+    if(i===0) { return startend[0]; }
+    if(i===(n-1)) { return startend[1]; }
+    else {return via; }
+  }
 });
 
 // add marker labels
@@ -124,9 +130,13 @@ if (viewOptions.waypoints.length < 1) {
 if (viewOptions.waypoints.length > 1) {
   control.setWaypoints(viewOptions.waypoints);
 }
-// add onClick option
+// add onClick event
 var mapClick = map.on('click', mapChange);
 plan.on('waypointschanged', updateHash);
+// add onZoom event
+map.on('zoomend', mapZoom);
+map.on('moveend', mapMove);
+
 
 function mapChange(e) {
   var length = control.getWaypoints().filter(function(pnt) {
@@ -138,30 +148,49 @@ function mapChange(e) {
   } else {
     if (length === 1) length = length + 1;
     control.spliceWaypoints(length - 1, 1, e.latlng);
-    updateSearch();
+    //updateSearch();
   }
 }
 
+function mapZoom(e) {
+  var linkOptions = toolsControl._getLinkOptions();
+  var updateZoom = links.format(window.location.href, linkOptions);
+  history.replaceState( {} , 'Project OSRM Demo', updateZoom);
+}
+
+// actually just refocuses on the map but could reload on location
+function mapMove(e) {
+  var linkOptions = toolsControl._getLinkOptions();
+  var updateCenter = links.format(window.location.href, linkOptions);
+  history.replaceState( {} , 'Project OSRM Demo', updateCenter);
+}
+
+
 // Update browser url
-function updateHash() {
+function updateHash(e) {
   var length = control.getWaypoints().filter(function(pnt) {
     return pnt.latLng;
   }).length;
   var linkOptions = toolsControl._getLinkOptions();
   linkOptions.waypoints = plan._waypoints;
-
   var hash = links.format(window.location.href, linkOptions).split('?');
-  window.location.hash= hash[1];
+  var baseURL = window.location.hash = hash[0];
+  var newBaseURL = baseURL.concat('?');
+  var newParms = window.location.hash = hash[1];
+  var oldURL = window.location;
+  var newURL = newBaseURL.concat(newParms);
+  history.replaceState( {} , 'Directions', newURL);
 }
 
 // Update browser url
-function updateSearch() {
+function updateSearch(e) {
   var length = control.getWaypoints().filter(function(pnt) {
     return pnt.latLng;
   }).length;
   var linkOptions = toolsControl._getLinkOptions();
   linkOptions.waypoints = plan._waypoints;
   var search = links.format(window.location.href, linkOptions).split('?');
+  window.location.search = search[1];
 }
 
 // User selected routes
@@ -189,5 +218,15 @@ L.control.locate({
     showPopup: false,
     locateOptions: {}
 }).addTo(map);
+
+
+
+
+
+
+
+
+
+
 
 

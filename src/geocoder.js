@@ -15,9 +15,7 @@ var geocoder = function(i, num) {
   close = L.DomUtil.create('span', 'osrm-directions-icon osrm-close-icon', container),
   name = String.fromCharCode(65 + i),
   icon = L.DomUtil.create('div', 'leaflet-osrm-geocoder-label', label);
-
   icon.innerHTML = name;
-
   return {
     container: container,
     input: input,
