@@ -115,6 +115,7 @@ var control = L.Routing.control({
   alternativeClassName: options.lrm.alternativeClassName,
   stepClassName: options.lrm.stepClassName,
   language: viewOptions.language,
+  showAlternatives: true,
   units: viewOptions.units,
   serviceUrl: mapView.services[0].path
 }).addTo(map);
@@ -209,7 +210,8 @@ control.on('alternateChosen', function(e) {
 L.control.locate({
     follow: false,
     setView: true,
-    keepCurrentZoomLevel: false,
+    remainActive: false,
+    keepCurrentZoomLevel: true,
     stopFollowingOnDrag: false,
     onLocationError: function(err) {alert(err.message)},
     onLocationOutsideMapBounds:  function(context) { 
